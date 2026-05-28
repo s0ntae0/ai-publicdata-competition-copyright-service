@@ -1,0 +1,3766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>All About K</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@400;600;700&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #c0392b;
+  --crimson: #8b1a1a;
+  --gold: #c8960c;
+  --blue: #1a4a6b;
+  --green: #2e6b3e;
+  --ivory: #f6f1e8;
+  --hanji: #ece4d6;
+  --surface: #fbf8f2;
+  --surface-2: #f2ece1;
+  --ink: #1e1713;
+  --muted: #6c5d4d;
+  --ghost: #a99886;
+  --border: rgba(90, 60, 30, 0.14);
+  --border-strong: rgba(90, 60, 30, 0.24);
+  --shadow: 0 10px 28px rgba(20, 14, 10, 0.12);
+  --radius: 16px;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  font-family: 'Noto Sans KR', sans-serif;
+  /* WebView 좌측 쏠림 방지 */
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+.phone {
+  width: 100%;
+  min-height: 100vh;
+  /* WebView 레이아웃 고정 — 좌측 쏠림 방지 */
+  position: relative;
+  left: 0;
+  right: 0;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--surface);
+  border: none;
+  box-shadow: none;
+  flex: 1 1 auto;
+  align-self: stretch;
+}
+.phone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: radial-gradient(rgba(0,0,0,0.03) 0.7px, transparent 0.7px);
+  background-size: 8px 8px;
+}
+.status-bar {
+  height: 46px;
+  background: var(--crimson);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  position: relative;
+  z-index: 2;
+  border-bottom: 2px solid var(--gold);
+}
+.status-bar .brand {
+  font-family: 'Hahmlet', serif;
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.screen {
+  display: none;
+  flex-direction: column;
+  height: calc(100vh - 68px);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.screen.active {
+  display: flex;
+}
+.top-bar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--border-strong);
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+}
+.top-bar h1 {
+  font-family: 'Hahmlet', serif;
+  font-size: 18px;
+  color: var(--ink);
+}
+.top-badge {
+  font-size: 11px;
+  color: var(--muted);
+}
+.screen-body {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  padding: 20px 18px;
+  height: 180px;
+  background: linear-gradient(135deg, var(--crimson), #631111 72%);
+  color: white;
+  margin-bottom: 16px;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08), transparent 28%),
+              radial-gradient(circle at 10% 90%, rgba(200,150,12,0.18), transparent 30%);
+}
+.hero small {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid rgba(200,150,12,0.35);
+  border-radius: 999px;
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.hero h2 {
+  position: relative;
+  z-index: 1;
+  font-family: 'Hahmlet', serif;
+  font-size: 24px;
+  line-height: 1.3;
+}
+.hero p {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  color: rgba(255,255,255,0.75);
+  font-size: 12px;
+}
+.section-title {
+  font-family: 'Hahmlet', serif;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+.section-title::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: var(--red);
+  border-radius: 2px;
+}
+.quick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.quick-card, .action-card, .info-card, .chat-card, .option-btn {
+  border: 1px solid var(--border-strong);
+  background: white;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+.quick-card {
+  padding: 15px;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+.quick-card:active, .action-card:active, .option-btn:active, .chat-send:active, .capture-btn:active {
+  transform: scale(0.98);
+}
+.quick-card:hover { border-color: rgba(192,57,43,0.34); }
+.quick-card .icon { font-size: 24px; margin-bottom: 8px; }
+.quick-card .title { font-family: 'Hahmlet', serif; font-size: 14px; color: var(--ink); }
+.quick-card .sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.recent-item, .list-item {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.recent-thumb, .list-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--hanji);
+  border: 1px solid var(--border);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.recent-title, .list-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+.recent-sub, .list-sub { font-size: 11px; color: var(--ghost); margin-top: 3px; }
+.camera-panel {
+  background: white;
+  border: 1px solid var(--border-strong);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.camera-preview {
+  height: 260px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #34495e 0%, #1f2b38 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.88);
+  margin-bottom: 14px;
+}
+.camera-preview::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 44%, rgba(255,255,255,0.06) 46%, transparent 47%),
+              linear-gradient(transparent 49%, rgba(255,255,255,0.06) 50%, transparent 51%),
+              linear-gradient(90deg, transparent 49%, rgba(255,255,255,0.06) 50%, transparent 51%);
+}
+.camera-guide { position: relative; z-index: 1; text-align: center; }
+.camera-guide .big { font-size: 42px; margin-bottom: 8px; }
+.camera-guide p { font-size: 12px; color: rgba(255,255,255,0.78); }
+.capture-row { display: flex; gap: 10px; }
+.capture-btn, .option-btn, .chat-send {
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.capture-btn {
+  flex: 1;
+  padding: 14px 12px;
+  border-radius: 14px;
+  font-family: 'Hahmlet', serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+.capture-btn.primary { background: var(--red); color: white; }
+.capture-btn.secondary {
+  background: var(--surface-2);
+  color: var(--muted);
+  border: 1px solid var(--border-strong);
+}
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.action-card { padding: 14px; cursor: pointer; }
+.action-card .emoji { font-size: 22px; margin-bottom: 8px; }
+.action-card h3 { font-size: 13px; font-family: 'Hahmlet', serif; color: var(--ink); margin-bottom: 4px; }
+.action-card p { font-size: 11px; color: var(--muted); line-height: 1.5; }
+.chat-panel {
+  background: white;
+  border: 1px solid var(--border-strong);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+  margin-bottom: 14px;
+}
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.chat-header h3 { font-family: 'Hahmlet', serif; font-size: 15px; color: var(--ink); }
+.status-pill {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(46,107,62,0.08);
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 700;
+}
+.chat-box {
+  height: 320px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--surface-2);
+  border-radius: 14px;
+  padding: 10px 12px;
+  min-height: 250px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+}
+.bubble {
+  max-width: 78%;
+  width: fit-content;
+  padding: 9px 12px;
+  border-radius: 14px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.bubble.bot { background: white; border: 1px solid var(--border); color: var(--ink); align-self: flex-start; max-width: 92%; }
+.bubble.user { margin-left: auto; background: var(--red); color: white; align-self: flex-end; }
+.option-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.option-btn { padding: 9px 12px; font-size: 11px; color: var(--muted); }
+.option-btn.active { background: var(--red); color: white; border-color: var(--red); }
+.chat-input-row { display: flex; gap: 8px; }
+.chat-input {
+  flex: 1;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 12px;
+  background: white;
+}
+.chat-send { width: 52px; border-radius: 12px; background: var(--blue); color: white; font-weight: 700; }
+.info-card { padding: 14px; margin-bottom: 10px; }
+.info-card h3 { font-family: 'Hahmlet', serif; font-size: 13px; color: var(--ink); margin-bottom: 6px; }
+.info-card p { font-size: 11px; line-height: 1.6; color: var(--muted); }
+.bottom-nav {
+  height: 68px;
+  border-top: 1px solid var(--border-strong);
+  background: rgba(255,255,255,0.94);
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  color: var(--ghost);
+  font-size: 10px;
+}
+.nav-item .nav-icon { font-size: 20px; }
+.nav-item.active { color: var(--red); font-weight: 700; }
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 20px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+input:checked + .slider { background-color: var(--red); }
+input:checked + .slider:before { transform: translateX(20px); }
+#toggle-label { min-width: 55px; text-align: center; }
+
+/* AAK 카테고리 그리드 */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.cat-card {
+  background: white;
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  padding: 16px 10px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  box-shadow: var(--shadow);
+}
+.cat-card:hover { border-color: rgba(192,57,43,0.34); transform: translateY(-2px); }
+.cat-card:active { transform: scale(0.97); }
+.cat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+.cat-icon.red    { background: #fdecea; }
+.cat-icon.blue   { background: #e8f0f8; }
+.cat-icon.green  { background: #e8f4ec; }
+.cat-icon.amber  { background: #fdf4e3; }
+.cat-icon.purple { background: #f0eefa; }
+.cat-icon.teal   { background: #e3f4f0; }
+.cat-icon.pink   { background: #fce8f0; }
+.cat-icon.navy   { background: #e8ecf4; }
+.cat-icon.orange { background: #fef0e3; }
+.cat-title {
+  font-family: 'Hahmlet', serif;
+  font-size: 12px;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.toast {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30,23,19,0.82);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 99;
+}
+.toast.show { opacity: 1; }
+
+/* ── 다크모드 ────────────────────────────── */
+.dark-mode {
+  --surface: #161310;
+  --surface-2: #201c17;
+  --hanji: #272018;
+  --ivory: #161310;
+  --ink: #f2e8d8;
+  --muted: #c4b098;
+  --ghost: #7a6a58;
+  --border: rgba(220,185,110,0.12);
+  --border-strong: rgba(220,185,110,0.24);
+  --shadow: 0 8px 28px rgba(0,0,0,0.55);
+}
+.dark-mode .info-card { background: #201c17; border-color: var(--border-strong); }
+.dark-mode .info-card h3 { color: #f2e8d8; }
+.dark-mode .info-card p  { color: #c4b098; }
+.dark-mode body { background: #0a0806; }
+.dark-mode .status-bar { background: #1a0e0a; }
+.dark-mode .top-bar { background: rgba(22,18,12,0.95); border-bottom-color: var(--border-strong); }
+.dark-mode .top-bar h1  { color: #f2e8d8; }
+.dark-mode .top-badge   { color: #c4b098; }
+.dark-mode .bottom-nav  { background: rgba(16,13,9,0.98); border-top-color: var(--border-strong); }
+.dark-mode .nav-item    { color: #7a6a58; }
+.dark-mode .nav-item.active { color: #e85c4a; }
+.dark-mode .section-title { color: #c4b098; }
+.dark-mode .section-title::before { background: #e85c4a; }
+/* 홈 */
+.dark-mode .hero { background: linear-gradient(135deg,#5c1010,#2e0808 72%); }
+.dark-mode .hero h2 { color: #fff; }
+.dark-mode .hero p  { color: rgba(255,255,255,0.82); }
+/* 카드 공통 */
+.dark-mode .quick-card,
+.dark-mode .action-card,
+.dark-mode .chat-panel,
+.dark-mode .camera-panel,
+.dark-mode .cat-card,
+.dark-mode .recent-item,
+.dark-mode .list-item { background: #201c17; border-color: var(--border-strong); }
+.dark-mode .quick-card .title { color: #f2e8d8; }
+.dark-mode .quick-card .sub   { color: #c4b098; }
+.dark-mode .action-card h3    { color: #f2e8d8; }
+.dark-mode .action-card p     { color: #c4b098; }
+.dark-mode .recent-title,
+.dark-mode .list-title  { color: #f2e8d8; }
+.dark-mode .recent-sub,
+.dark-mode .list-sub    { color: #7a6a58; }
+.dark-mode .recent-thumb,
+.dark-mode .list-thumb  { background: #2a2318; border-color: var(--border-strong); }
+/* 채팅 */
+.dark-mode .chat-box     { background: #161310; }
+.dark-mode .bubble.bot   { background: #2a2318; border-color: var(--border-strong); color: #f2e8d8; }
+.dark-mode .bubble.user  { background: #8b1a1a; color: #fff; }
+.dark-mode .chat-input   { background: #201c17; color: #f2e8d8; border-color: var(--border-strong); }
+.dark-mode .chat-input::placeholder { color: #7a6a58; }
+.dark-mode .chat-attach  { background: #2a2318; color: #c4b098; border-color: var(--border-strong); }
+.dark-mode .chat-header h3 { color: #f2e8d8; }
+/* K-렌즈 */
+.dark-mode .camera-preview { background: linear-gradient(180deg,#1a2530,#0e161e); }
+/* 설정 카드 */
+.dark-mode .setting-card    { background: #201c17; border-color: var(--border-strong); }
+.dark-mode .setting-label   { color: #f2e8d8; }
+.dark-mode .setting-desc    { color: #7a6a58; }
+.dark-mode .divider         { background: var(--border-strong); }
+.dark-mode .chevron         { color: #7a6a58; }
+/* 슬라이더 */
+.dark-mode .slider-val      { color: #e85c4a; }
+/* 음성 */
+.dark-mode .voice-toggle-btn   { background: #201c17; border-color: var(--border-strong); color: #f2e8d8; }
+.dark-mode .voice-toggle-btn .ptb-arrow { color: #7a6a58; }
+.dark-mode .voice-summary-card { background: #201c17; border-color: var(--border-strong); }
+.dark-mode .voice-sum-name     { color: #f2e8d8; }
+.dark-mode .voice-sum-sub      { color: #c4b098; }
+.dark-mode .voice-popup        { background: #1e1a14; }
+.dark-mode .voice-popup-close  { background: #2a2318; color: #c4b098; }
+.dark-mode .voice-popup-header { border-bottom-color: var(--border-strong); }
+.dark-mode .voice-popup-title  { color: #f2e8d8; }
+.dark-mode .voice-pop-row      { border-bottom-color: var(--border); }
+.dark-mode .voice-pop-row:hover { background: #2a2318; }
+.dark-mode .voice-pop-row.selected { background: rgba(139,26,26,0.22); }
+.dark-mode .voice-pop-name     { color: #f2e8d8; }
+.dark-mode .voice-pop-sub      { color: #c4b098; }
+.dark-mode .voice-region-label { background: #161310; color: #7a6a58; border-bottom-color: var(--border); }
+.dark-mode .voice-section-label { color: #c4b098; }
+/* 언어 */
+.dark-mode .lang-btn         { background: #201c17; border-color: var(--border-strong); }
+.dark-mode .lang-btn small   { color: #c4b098; }
+.dark-mode .lang-modal       { background: #1e1a14; }
+.dark-mode .lang-modal-header { border-bottom-color: var(--border-strong); }
+.dark-mode .lang-modal-title { color: #f2e8d8; }
+.dark-mode .lang-modal-close { background: #2a2318; color: #c4b098; }
+.dark-mode .lang-row         { border-bottom-color: var(--border); }
+.dark-mode .lang-row:hover   { background: #2a2318; }
+.dark-mode .lang-row.active  { background: rgba(139,26,26,0.25); }
+.dark-mode .lang-name        { color: #f2e8d8; }
+.dark-mode .lang-country     { color: #7a6a58; }
+.dark-mode .lang-region-label { background: #161310; color: #7a6a58; border-bottom-color: var(--border); }
+/* 폰트 버튼 */
+.dark-mode .font-btn         { background: #201c17; color: #c4b098; border-color: var(--border-strong); }
+.dark-mode .font-btn.active  { background: #c0392b; color: #fff; border-color: #c0392b; }
+/* 첨부 */
+.dark-mode .attach-preview   { background: #201c17; border-color: var(--border-strong); }
+/* 구독 플랜 요약 카드 */
+.dark-mode .plan-card         { background: #201c17; border-color: var(--border-strong); }
+.dark-mode .plan-card .plan-name  { color: #f2e8d8; }
+.dark-mode .plan-card .plan-price { color: #c4b098; }
+.dark-mode .plan-card .plan-detail-hint { color: #7a6a58; }
+.dark-mode .plan-card.plan-pro { background: linear-gradient(160deg,#161c26,#111620); }
+.dark-mode .plan-card.plan-max { background: linear-gradient(160deg,#1e1210,#180e0c); }
+.dark-mode .plan-toggle-btn   { background: #201c17; border-color: var(--border-strong); color: #f2e8d8; }
+.dark-mode .plan-toggle-btn .ptb-arrow { color: #7a6a58; }
+/* 구독 플랜 팝업 */
+.dark-mode .plan-popup        { background: #1e1a14; }
+.dark-mode .plan-popup-close  { background: #2a2318; color: #c4b098; }
+.dark-mode .plan-popup-title  { color: #f2e8d8; }
+.dark-mode .plan-popup-price  { color: #c4b098; }
+.dark-mode .plan-popup-section-title { color: #7a6a58; }
+.dark-mode .plan-feat-row     { color: #c4b098; border-bottom-color: var(--border); }
+.dark-mode .plan-feat-row.na  { color: #4a4038; }
+.dark-mode .plan-popup-footer { border-top-color: var(--border-strong); }
+.dark-mode .cta-free          { background: #2a2318; color: #c4b098; border-color: var(--border-strong); }
+.dark-mode #popup-pro .plan-popup-header { background: linear-gradient(135deg,#0e1420,#0a1018) !important; }
+.dark-mode #popup-max .plan-popup-header { background: linear-gradient(135deg,#1c0e0c,#140808) !important; }
+.dark-mode #popup-voice-f .voice-popup-header { background: #1e1a14 !important; }
+.dark-mode #popup-voice-m .voice-popup-header { background: #1e1a14 !important; }
+/* AAK 카테고리 */
+.dark-mode .cat-title           { color: #f2e8d8; }
+.dark-mode .cat-icon.red    { background: #2e1210; }
+.dark-mode .cat-icon.blue   { background: #101c28; }
+.dark-mode .cat-icon.green  { background: #0e1e12; }
+.dark-mode .cat-icon.amber  { background: #201800; }
+.dark-mode .cat-icon.purple { background: #18102a; }
+.dark-mode .cat-icon.teal   { background: #0e201c; }
+.dark-mode .cat-icon.pink   { background: #281018; }
+.dark-mode .cat-icon.navy   { background: #101420; }
+.dark-mode .cat-icon.orange { background: #201408; }
+
+/* ── 구독 플랜 카드 ──────────────────────── */
+.plan-toggle-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  background: white;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-family: 'Hahmlet', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  transition: all 0.15s;
+  box-shadow: var(--shadow);
+}
+.plan-toggle-btn:active { transform: scale(0.98); }
+.plan-toggle-btn .ptb-left { display: flex; align-items: center; gap: 8px; }
+.plan-toggle-btn .ptb-arrow {
+  font-size: 16px; color: var(--ghost);
+  transition: transform 0.25s;
+}
+.plan-toggle-btn.open .ptb-arrow { transform: rotate(180deg); }
+.dark-mode .plan-toggle-btn { background: #1e1a14; border-color: var(--border-strong); }
+
+.plans-container {
+  display: none;
+  flex-direction: row;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.plans-container.open { display: flex; }
+
+/* 한 열 요약 카드 (클릭 → 팝업) */
+.plan-card {
+  flex: 1;
+  border-radius: 14px;
+  padding: 12px 8px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 1.5px solid var(--border-strong);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  position: relative;
+}
+.plan-card:active { transform: scale(0.96); }
+.plan-card.plan-free { border-color: rgba(46,107,62,0.4); }
+.plan-card.plan-pro  { border-color: rgba(26,74,107,0.5); background: linear-gradient(160deg,#f5f9ff,#eef4ff); }
+.plan-card.plan-max  { border-color: rgba(160,40,20,0.45); background: linear-gradient(160deg,#fff5f0,#ffede8); }
+
+.plan-card .plan-emoji { font-size: 22px; margin-bottom: 2px; }
+.plan-card .plan-name  { font-family:'Hahmlet',serif; font-size:12px; font-weight:700; color:var(--ink); }
+.plan-card .plan-price { font-size:10px; color:var(--muted); font-weight:700; margin-top:2px; }
+.plan-badge {
+  display: inline-block;
+  font-size: 9px; padding: 2px 7px;
+  border-radius: 999px; font-weight: 700;
+  margin-top: 4px;
+}
+.badge-free { background:rgba(46,107,62,0.10); color:var(--green); }
+.badge-pro  { background:rgba(26,74,107,0.12); color:var(--blue); }
+.badge-max  { background:rgba(192,57,43,0.12); color:var(--red); }
+.plan-card .plan-detail-hint {
+  font-size:9px; color:var(--ghost); margin-top:4px;
+}
+
+/* ── 플랜 상세 팝업 모달 ── */
+.plan-popup-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.52);
+  z-index: 300;
+  align-items: flex-end;
+  backdrop-filter: blur(4px);
+}
+.plan-popup-overlay.open { display: flex; }
+
+.plan-popup {
+  width: 100%;
+  background: var(--surface);
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+  animation: slideUp 0.25s ease;
+  max-height: 85%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 팝업 헤더 */
+.plan-popup-header {
+  padding: 20px 20px 16px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-strong);
+}
+.plan-popup-title-block { display: flex; flex-direction: column; gap: 4px; }
+.plan-popup-title {
+  font-family:'Hahmlet',serif; font-size:20px; font-weight:700; color:var(--ink);
+  display: flex; align-items: center; gap: 8px;
+}
+.plan-popup-price {
+  font-size:13px; font-weight:700; color:var(--muted);
+}
+.plan-popup-close {
+  width:30px; height:30px; border-radius:50%;
+  border:none; background:var(--surface-2); color:var(--muted);
+  font-size:14px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; margin-top:2px;
+}
+
+/* 팝업 본문 */
+.plan-popup-body { padding: 18px 20px; overflow-y: auto; flex: 1; }
+.plan-popup-section { margin-bottom: 14px; }
+.plan-popup-section-title {
+  font-size:10px; font-weight:700; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--ghost);
+  margin-bottom: 8px;
+}
+.plan-feat-row {
+  display: flex; align-items: stretch; gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px; color: var(--muted);
+  line-height: 1.5;
+}
+.plan-feat-row:last-child { border-bottom: none; }
+.plan-feat-row .feat-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.plan-feat-row .feat-text { flex: 1; }
+.plan-feat-row.na { color: var(--ghost); }
+.plan-feat-row.na .feat-text { text-decoration: line-through; }
+
+/* 팝업 하단 CTA */
+.plan-popup-footer {
+  padding: 14px 20px 20px;
+  border-top: 1px solid var(--border-strong);
+}
+.plan-cta-btn {
+  width: 100%; padding: 14px;
+  border: none; border-radius: 14px;
+  font-family:'Hahmlet',serif; font-size:14px; font-weight:700;
+  cursor: pointer; transition: opacity 0.15s, transform 0.12s;
+}
+.plan-cta-btn:active { opacity: 0.85; transform: scale(0.98); }
+.cta-free { background: var(--surface-2); color: var(--muted); border: 1.5px solid var(--border-strong); }
+.cta-pro  { background: var(--blue); color: white; }
+.cta-max  { background: linear-gradient(90deg,#c0392b,#8b1a1a); color: white; }
+
+/* 다크모드 팝업 */
+.dark-mode .plan-popup { background: #1e1a14; }
+.dark-mode .plan-popup-close { background: #2a2419; }
+.dark-mode .plan-card { background: #1e1a14; border-color: var(--border-strong); }
+.dark-mode .plan-card.plan-pro { background: linear-gradient(160deg,#1a1c24,#141820); }
+.dark-mode .plan-card.plan-max { background: linear-gradient(160deg,#1e1412,#1c1010); }
+
+/* ── 언어 모달 ───────────────────────────── */
+.lang-modal-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  align-items: flex-end;
+  backdrop-filter: blur(3px);
+}
+.lang-modal-overlay.open { display: flex; }
+.lang-modal {
+  width: 100%;
+  max-height: 78%;
+  background: var(--surface);
+  border-radius: 22px 22px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.25s ease;
+}
+@keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: none; opacity: 1; } }
+.lang-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--border-strong);
+}
+.lang-modal-title { font-family: 'Hahmlet',serif; font-size: 16px; font-weight: 700; color: var(--ink); }
+.lang-modal-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: none; background: var(--surface-2); color: var(--muted);
+  font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.lang-modal-body { overflow-y: auto; flex: 1; }
+.lang-region-label {
+  padding: 8px 18px 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ghost); background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.lang-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 18px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+.lang-row:hover { background: var(--surface-2); }
+.lang-row.active { background: rgba(139,26,26,0.06); }
+.lang-flag { font-size: 22px; flex-shrink: 0; }
+.lang-info { flex: 1; }
+.lang-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.lang-country { font-size: 10px; color: var(--ghost); margin-top: 2px; }
+.lang-check { font-size: 14px; color: var(--red); font-weight: 700; min-width: 16px; text-align: right; }
+
+/* ── 음성 지원 토글+팝업 ─────────────────── */
+.voice-toggle-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  background: white;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-family: 'Hahmlet', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  transition: all 0.15s;
+  box-shadow: var(--shadow);
+}
+.voice-toggle-btn:active { transform: scale(0.98); }
+.voice-toggle-btn .ptb-left { display: flex; align-items: center; gap: 8px; }
+.voice-toggle-btn .ptb-arrow { font-size:16px; color:var(--ghost); transition:transform 0.25s; }
+.voice-toggle-btn.open .ptb-arrow { transform: rotate(180deg); }
+
+/* 펼쳐진 요약 카드 — 가로 2열 */
+.voice-sum-container {
+  display: none;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.voice-sum-container.open { display: flex; }
+
+.voice-summary-card {
+  flex: 1;
+  background: white;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 14px 10px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  transition: transform 0.15s;
+  box-shadow: var(--shadow);
+}
+.voice-summary-card:active { transform: scale(0.96); }
+.voice-sum-emoji { font-size: 26px; }
+.voice-sum-name  { font-family:'Hahmlet',serif; font-size:13px; font-weight:700; color:var(--ink); }
+.voice-sum-sub   { font-size:10px; color:var(--muted); }
+.voice-sum-hint  { font-size:9px; color:var(--ghost); margin-top:2px; }
+
+/* 음성 팝업 공통 */
+.voice-popup-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.52);
+  z-index: 300;
+  align-items: flex-end;
+  backdrop-filter: blur(4px);
+}
+.voice-popup-overlay.open { display: flex; }
+.voice-popup {
+  width: 100%;
+  background: var(--surface);
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+  animation: slideUp 0.25s ease;
+  max-height: 88%;
+  display: flex;
+  flex-direction: column;
+}
+.voice-popup-header {
+  padding: 18px 20px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-strong);
+}
+.voice-popup-title {
+  font-family:'Hahmlet',serif; font-size:17px; font-weight:700; color:var(--ink);
+}
+.voice-popup-close {
+  width:30px; height:30px; border-radius:50%;
+  border:none; background:var(--surface-2); color:var(--muted);
+  font-size:14px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.voice-popup-body { overflow-y:auto; flex:1; }
+
+/* 지역 레이블 */
+.voice-region-label {
+  padding: 8px 18px 6px;
+  font-size: 10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--ghost); background:var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+/* 개별 음성 행 */
+.voice-pop-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 18px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+.voice-pop-row:hover { background: var(--surface-2); }
+.voice-pop-row.selected { background: rgba(139,26,26,0.06); }
+.voice-pop-row.locked   { opacity: 0.55; cursor: default; }
+.voice-pop-icon  { font-size:22px; flex-shrink:0; }
+.voice-pop-info  { flex:1; }
+.voice-pop-name  { font-size:13px; font-weight:700; color:var(--ink); }
+.voice-pop-sub   { font-size:10px; color:var(--ghost); margin-top:2px; }
+.voice-pop-right { display:flex; flex-direction:column; align-items:flex-end; gap:3px; }
+.voice-pop-check { font-size:14px; color:var(--red); font-weight:700; min-width:16px; }
+.voice-pop-badge {
+  font-size:9px; padding:2px 7px; border-radius:999px; font-weight:700;
+}
+.vpb-free { background:rgba(46,107,62,0.10); color:var(--green); }
+.vpb-pro  { background:rgba(26,74,107,0.12); color:var(--blue); }
+.vpb-max  { background:rgba(192,57,43,0.12); color:var(--red); }
+
+/* 속도 슬라이더 (팝업 footer) */
+.voice-popup-footer {
+  padding: 14px 20px 20px;
+  border-top: 1px solid var(--border-strong);
+}
+.speed-label-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.speed-label-txt { font-size:13px; font-weight:700; color:var(--ink); }
+.speed-val-txt   { font-size:13px; font-weight:700; color:var(--red); }
+
+/* ── 속도 슬라이더 ───────────────────────── */
+.slider-row { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; margin-bottom: 6px; }
+.slider-val { font-size: 12px; font-weight: 700; color: var(--red); }
+.speed-slider { width: 100%; accent-color: var(--red); margin-bottom: 4px; }
+.slider-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--ghost); }
+
+/* ── 설정 카드 & 행 ──────────────────────── */
+.setting-card {
+  background: white; border: 1px solid var(--border-strong);
+  border-radius: 16px; padding: 14px;
+  margin-bottom: 10px; box-shadow: var(--shadow);
+}
+.setting-row { display: flex; align-items: center; justify-content: space-between; min-height: 42px; }
+.setting-info { display: flex; align-items: center; gap: 10px; }
+.setting-icon { font-size: 20px; flex-shrink: 0; }
+.setting-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+.setting-desc { font-size: 10px; color: var(--ghost); margin-top: 2px; }
+.divider { height: 1px; background: var(--border); margin: 6px 0; }
+.tap-row { cursor: pointer; }
+.tap-row:active { opacity: 0.7; }
+.chevron { font-size: 20px; color: var(--ghost); }
+
+/* ── 글자 크기 ───────────────────────────── */
+.font-size-row { display: flex; gap: 6px; width: 100%; }
+.font-btn {
+  flex: 1; padding: 8px 4px;
+  border: 1px solid var(--border-strong); border-radius: 10px;
+  background: white; font-size: 11px; color: var(--muted);
+  cursor: pointer; transition: all 0.15s;
+}
+.font-btn.active { background: var(--red); color: white; border-color: var(--red); }
+
+/* ── 말동무 모드 라벨 ── */
+.mode-label {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  transition: all 0.25s;
+}
+/* 대화모드 — 켜져 있을 때 활성 스타일 */
+#label-on {
+  background: rgba(46,107,62,0.10);
+  color: var(--green);
+  display: inline-block;
+}
+/* 정보제공 — 기본 숨김 */
+#label-off {
+  display: none;
+}
+/* 토글 OFF 상태 */
+#label-on.dimmed {
+  display: none;
+}
+#label-off.visible {
+  display: inline-block;
+  background: rgba(100,90,80,0.10);
+  color: var(--ghost);
+}
+.dark-mode #label-on  { background: rgba(46,107,62,0.18); color: #6ecf8a; }
+.dark-mode #label-off.visible { background: rgba(100,90,80,0.20); color: var(--ghost); }
+.chat-attach {
+  width: 40px; height: 40px; flex-shrink: 0;
+  border-radius: 12px; border: 1px solid var(--border-strong);
+  background: var(--surface-2); color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s;
+}
+.chat-attach:active { background: var(--hanji); transform: scale(0.94); }
+.attach-preview {
+  margin-top: 8px; position: relative;
+  border: 1px solid var(--border-strong); border-radius: 12px;
+  overflow: hidden; background: var(--surface-2);
+}
+.attach-preview img { width: 100%; max-height: 120px; object-fit: cover; display: block; }
+.attach-remove {
+  position: absolute; top: 6px; right: 6px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(0,0,0,0.55); color: white;
+  border: none; font-size: 11px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.chat-input, #info-text-input {
+  font-size: 16px !important;
+}
+
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+}
+.chat-box {
+  flex: 1;
+  min-height: 200px;
+  max-height: 320px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+}
+input:focus {
+  font-size: 16px !important;
+}
+
+/* ── 카테고리 선택 바텀시트 ── */
+.cat-sheet-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.52);
+  z-index: 400;
+  align-items: flex-end;
+  backdrop-filter: blur(4px);
+}
+.cat-sheet-overlay.open { display: flex; }
+.cat-sheet {
+  width: 100%;
+  background: var(--surface);
+  border-radius: 24px 24px 0 0;
+  padding: 20px 18px 28px;
+  animation: slideUp 0.25s ease;
+}
+.cat-sheet-title {
+  font-family: 'Hahmlet', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.cat-sheet-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+.cat-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.cat-sheet-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 8px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 16px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: var(--shadow);
+}
+.cat-sheet-btn:active { transform: scale(0.96); }
+.cat-sheet-btn.selected {
+  border-color: var(--red);
+  background: rgba(192,57,43,0.06);
+}
+.cat-sheet-btn .cs-icon { font-size: 26px; }
+.cat-sheet-btn .cs-label {
+  font-family: 'Hahmlet', serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.cat-sheet-confirm {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: var(--red);
+  color: white;
+  font-family: 'Hahmlet', serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.cat-sheet-confirm:active { opacity: 0.85; }
+/* 다크모드 */
+.dark-mode .cat-sheet { background: #1e1a14; }
+.dark-mode .cat-sheet-btn { background: #2a2318; border-color: var(--border-strong); }
+.dark-mode .cat-sheet-btn.selected { background: rgba(192,57,43,0.18); border-color: var(--red); }
+.dark-mode .cat-sheet-btn .cs-label { color: #f2e8d8; }
+/* 현재 카테고리 뱃지 */
+.cat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(192,57,43,0.08);
+  border: 1px solid rgba(192,57,43,0.2);
+  font-size: 11px;
+  color: var(--red);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.cat-badge:active { background: rgba(192,57,43,0.16); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar" style="display:none" style="display:none" style="display:none">
+    <span id="clock">0:00</span>
+    <span class="brand">All About K!</span>
+    <span>●●● 🔋</span>
+  </div>
+
+  <!-- 홈 -->
+  <section class="screen active" id="screen-home">
+    <div class="top-bar">
+      <h1>Travel Guide</h1>
+      <span class="top-badge">Everything about Korea...</span>
+    </div>
+    <div class="screen-body">
+      <div class="hero">
+        <small>TOURIST ASSIST APP</small>
+        <h2>Snap, Ask,<br>Get Help Instantly</h2>
+        <p>A tourist app to identify landmarks with K-Lens and practice conversations with your AI companion.</p>
+      </div>
+      <div class="section-title">Quick Access</div>
+      <div class="quick-grid">
+        <div class="quick-card" onclick="switchTab('lens')">
+          <div class="icon">📷</div>
+          <div class="title">K-Lens</div>
+          <div class="sub">Photo · Landmark Info</div>
+        </div>
+        <div class="quick-card" onclick="switchTab('chat')">
+          <div class="icon">💬</div>
+          <div class="title">Chat Buddy</div>
+          <div class="sub">K-Chatbot · Roleplay</div>
+        </div>
+      </div>
+      <div class="section-title">Featured</div>
+      <div class="action-grid">
+        <div class="action-card" onclick="showToast('Etiquette Guide')">
+          <div class="emoji">🙏</div>
+          <h3>Etiquette Guide</h3>
+          <p>Manners for restaurants, transit, and tourist sites</p>
+        </div>
+        <div class="action-card" onclick="switchTab('aak')">
+          <div class="emoji">📍</div>
+          <h3>Facilities</h3>
+          <p>Tourist sites, transit, hospitals, shops & more</p>
+        </div>
+      </div>
+      <div class="section-title">Recent</div>
+      <div class="recent-item">
+        <div class="recent-thumb">📍</div>
+        <div>
+          <div class="recent-title">Navigation near Gyeongbokgung</div>
+          <div class="recent-sub">K-Lens · Just now</div>
+        </div>
+      </div>
+      <div class="recent-item">
+        <div class="recent-thumb">🍜</div>
+        <div>
+          <div class="recent-title">Restaurant Order Roleplay</div>
+          <div class="recent-sub">Chat Buddy · 5 min ago</div>
+        </div>
+      </div>
+      <div class="recent-item">
+        <div class="recent-thumb">🚌</div>
+        <div>
+          <div class="recent-title">Taking a Bus in Korean</div>
+          <div class="recent-sub">Chat Buddy · Yesterday</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- K-렌즈 -->
+  <section class="screen" id="screen-lens">
+    <div class="top-bar">
+      <h1>K-Lens</h1>
+    </div>
+    <div class="screen-body">
+      <input type="file" id="lens-camera-input" accept="image/*" capture="environment" style="display:none" onchange="handleLensCapture(this)">
+      <input type="file" id="lens-gallery-input" accept="image/*" style="display:none" onchange="handleLensCapture(this)">
+      <div class="camera-panel">
+        <div class="camera-preview" id="lens-preview-area">
+          <div class="camera-guide" id="lens-guide">
+            <div class="big">📷</div>
+            <strong style="font-family:'Hahmlet',serif;font-size:15px;">Camera</strong>
+            <p style="margin-top:6px;">Ask me anything!!</p>
+          </div>
+          <img id="lens-preview-img" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" src="" alt="촬영된 이미지">
+          <div id="lens-analyzing" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;flex-direction:column;gap:10px;z-index:10;">
+            <div style="font-size:32px;" id="lens-spin-icon">🔍</div>
+            <span style="color:white;font-size:13px;font-family:'Hahmlet',serif;">Analyzing...</span>
+          </div>
+        </div>
+        <div class="capture-row">
+          <button class="capture-btn secondary" onclick="document.getElementById('lens-gallery-input').click()">🖼 Gallery</button>
+          <button class="capture-btn primary" onclick="document.getElementById('lens-camera-input').click()">📷 Take Photo</button>
+        </div>
+      </div>
+      <div id="lens-result-panel" style="display:none;background:white;border:1.5px solid var(--border-strong);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <span style="font-size:28px;" id="lens-result-icon">🏯</span>
+          <div style="flex:1;">
+            <div style="font-family:'Hahmlet',serif;font-size:17px;font-weight:700;color:var(--ink);" id="lens-result-title">Geunjeongjeon Hall</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;" id="lens-result-sub">Gyeongbokgung · Geunjeongjeon Hall</div>
+          </div>
+
+        </div>
+        <div style="height:1px;background:var(--border);margin-bottom:12px;"></div>
+        <p style="font-size:12px;line-height:1.8;color:var(--muted);" id="lens-result-desc">Analysis results will be displayed here.</p>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button onclick="openKakaoMap()" style="flex:1;padding:9px;border-radius:12px;border:1px solid var(--border-strong);background:var(--surface-2);font-size:11px;color:var(--muted);cursor:pointer;">📍 View Map</button>
+          <button onclick="learnMoreInChat()" style="flex:1;padding:9px;border-radius:12px;border:none;background:var(--red);color:white;font-size:11px;font-weight:700;cursor:pointer;">💬 Learn More</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <div class="section-title" style="margin:0;">Recent History</div>
+        <button id="clear-lens-history-btn" onclick="clearAllLensHistory()" style="display:none;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:8px;padding:3px 9px;cursor:pointer;">Clear All</button>
+      </div>
+      <div id="lens-history-list">
+        <div style="text-align:center;padding:20px;color:var(--ghost);font-size:12px;">No scan history yet</div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="screen" id="screen-chat">
+    <div class="top-bar">
+      <h1>Chat Buddy</h1>
+    </div>
+    <div class="screen-body">
+      <div class="chat-panel">
+        <div class="chat-header" style="flex-wrap:nowrap;overflow:hidden;">
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+            <h3 style="white-space:nowrap;">Chat</h3>
+            <label class="switch" style="margin:0 2px;flex-shrink:0;">
+              <input type="checkbox" id="chat-mode-toggle" onchange="switchChatMode(this.checked ? 'conversation' : 'info')">
+              <span class="slider"></span>
+            </label>
+            <span id="label-mode" style="font-size:10px;color:var(--green);font-weight:700;white-space:nowrap;">Conv.</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
+            <span class="cat-badge" id="cat-badge" onclick="openCatSheet()" style="font-size:10px;padding:3px 7px;">
+              <span id="cat-badge-icon">🎯</span>
+              <span id="cat-badge-label">Situation</span>
+            </span>
+            <span class="status-pill">ONLINE</span>
+          </div>
+        </div>
+        <div id="chat-conversation-panel">
+          <div class="chat-box" id="chat-messages-box">
+            <div class="bubble bot">Hello! Which situation would you like to practice?</div>
+            <div class="bubble bot">Pick a category and let's start chatting! 😊</div>
+          </div>
+          <div class="chat-input-row">
+            <button class="chat-attach" onclick="triggerAttach()" title="사진 첨부">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </button>
+            <input type="file" id="chat-file-input" accept="image/*" style="display:none" onchange="handleAttach(this)">
+            <input class="chat-input" id="chat-text-input" placeholder="Type your message" onkeydown="if(event.key==='Enter'&&!event.isComposing)sendChatMessage()"/>
+            <button class="chat-send" onclick="sendChatMessage()">Send</button>
+          </div>
+          <div id="attach-preview" class="attach-preview" style="display:none">
+            <img id="attach-img" src="" alt="첨부 이미지">
+            <button class="attach-remove" onclick="removeAttach()">✕</button>
+          </div>
+        </div>
+        <div id="chat-info-panel" style="display:none;">
+          <div class="chat-box" id="info-messages-box">
+            <div class="bubble bot">Ask anything about Korean culture, food, tourism & more! 🇰🇷</div>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="info-text-input" placeholder="e.g. Tell me about Bulgogi" onkeydown="if(event.key==='Enter'&&!event.isComposing)sendInfoMessage()"/>
+            <button class="chat-send" onclick="sendInfoMessage()">Search</button>
+          </div>
+        </div>
+      </div>
+      <div class="section-title">Recommended Scenarios</div>
+      <div class="list-item" onclick="loadScenario('cafe')"><div class="list-thumb">☕</div><div><div class="list-title">Cafe Order Practice</div><div class="list-sub">Iced Americano · Takeout expressions</div></div></div>
+      <div class="list-item" onclick="loadScenario('subway')"><div class="list-thumb">🚇</div><div><div class="list-title">Subway Navigation</div><div class="list-sub">Asking which exit & how to transfer</div></div></div>
+      <div class="list-item" onclick="loadScenario('hotel')"><div class="list-thumb">🏨</div><div><div class="list-title">Hotel Check-in</div><div class="list-sub">Confirm reservation, breakfast, checkout time</div></div></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;margin-bottom:6px;">
+        <div class="section-title" style="margin:0;">Chat History</div>
+        <button id="clear-all-history-btn" onclick="clearAllHistory()" style="display:none;font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:8px;padding:3px 9px;cursor:pointer;">Clear All</button>
+      </div>
+      <div id="chat-history-list">
+        <div style="text-align:center;padding:20px;color:var(--ghost);font-size:12px;">No conversation history yet</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-aak">
+    <div class="top-bar">
+      <h1>AAK!</h1>
+      <div id="location-badge" style="font-size:10px;color:var(--ghost);font-weight:600;letter-spacing:0.02em;"></div>
+    </div>
+    <div class="screen-body">
+
+      <div id="aak-no-server-banner" style="display:none;background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.22);border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:11px;color:var(--red);line-height:1.6;">
+        ⚠️ <strong>Server not configured</strong> — Enter the server URL in Settings to use real-time data.<br>
+        <span style="color:var(--muted);">Sample data will be shown when not connected to a live server.</span>
+      </div>
+
+      <div class="section-title">Live Info</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+
+        <div class="cat-card" onclick="showAakDetail('transit')">
+          <div class="cat-icon amber">🚌</div>
+          <div class="cat-title">Transit</div>
+          <div style="font-size:9px;color:var(--ghost);margin-top:2px;" id="transit-loc-hint">Nearby bus stops</div>
+        </div>
+
+        <div class="cat-card" onclick="showAakDetail('subway-congestion')">
+          <div class="cat-icon blue">🚇</div>
+          <div class="cat-title">Subway Crowd</div>
+          <div style="font-size:9px;color:var(--ghost);margin-top:2px;">Real-time</div>
+        </div>
+
+        <div class="cat-card" onclick="showAakDetail('place-congestion')">
+          <div class="cat-icon red">📍</div>
+          <div class="cat-title">Place Crowd</div>
+          <div style="font-size:9px;color:var(--ghost);margin-top:2px;">Tourist spots</div>
+        </div>
+
+        <div class="cat-card" onclick="showAakDetail('travel')">
+          <div class="cat-icon green">🗺️</div>
+          <div class="cat-title">Domestic Travel</div>
+          <div style="font-size:9px;color:var(--ghost);margin-top:2px;">Spots & Routes</div>
+        </div>
+
+        <div class="cat-card" onclick="showAakDetail('restaurant')">
+          <div class="cat-icon orange">🍽️</div>
+          <div class="cat-title">Restaurants</div>
+          <div style="font-size:9px;color:var(--ghost);margin-top:2px;" id="restaurant-loc-hint">Nearby restaurants</div>
+        </div>
+
+      </div>
+
+      <div class="section-title">General Info</div>
+      <div class="cat-grid">
+        <div class="cat-card" onclick="showAakDetail('etiquette')"><div class="cat-icon red">🙏</div><div class="cat-title">Etiquette</div></div>
+        <div class="cat-card" onclick="showToast('Tourist Sites')"><div class="cat-icon blue">🏯</div><div class="cat-title">Attractions</div></div>
+        <div class="cat-card" onclick="showToast('Amenities')"><div class="cat-icon green">🏪</div><div class="cat-title">Amenities</div></div>
+        <div class="cat-card" onclick="showToast('Hospitals')"><div class="cat-icon purple">🏥</div><div class="cat-title">Hospital</div></div>
+        <div class="cat-card" onclick="showToast('Shops')"><div class="cat-icon teal">🛍️</div><div class="cat-title">Shopping</div></div>
+        <div class="cat-card" onclick="showToast('Accommodation')"><div class="cat-icon navy">🏨</div><div class="cat-title">Hotels</div></div>
+        <div class="cat-card" onclick="showAakDetail('emergency')"><div class="cat-icon pink">🆘</div><div class="cat-title">Emergency</div></div>
+      </div>
+
+
+    </div>
+
+    <!-- AAK 상세 패널 (슬라이드업) -->
+    <div id="aak-detail-overlay" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.52);z-index:300;align-items:flex-end;backdrop-filter:blur(4px);" onclick="closeAakDetail()">
+      <div style="width:100%;background:var(--surface);border-radius:24px 24px 0 0;animation:slideUp 0.25s ease;max-height:75%;display:flex;flex-direction:column;" onclick="event.stopPropagation()">
+        <div style="padding:16px 18px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-strong);">
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <div style="font-family:'Hahmlet',serif;font-size:16px;font-weight:700;color:var(--ink);" id="aak-detail-title">Details</div>
+            <div id="aak-detail-api" style="font-size:9px;color:var(--ghost);font-weight:700;letter-spacing:0.04em;"></div>
+          </div>
+          <button onclick="closeAakDetail()" style="width:28px;height:28px;border-radius:50%;border:none;background:var(--surface-2);color:var(--muted);font-size:13px;cursor:pointer;">✕</button>
+        </div>
+        <div style="padding:16px 18px;overflow-y:auto;flex:1;" id="aak-detail-body">
+        </div>
+      </div>
+    </div>
+  </section>
+  </section>
+
+  <!-- 설정 -->
+  <section class="screen" id="screen-settings">
+    <div class="top-bar"><h1>Settings</h1></div>
+    <div class="screen-body" id="settings-body">
+
+      <!-- ── 언어 설정 ── -->
+      <div class="section-title" style="margin-top:4px;">Language Settings</div>
+      <div class="setting-card">
+        <div class="setting-row tap-row" onclick="openLangModal()">
+          <div class="setting-info">
+            <span class="setting-icon">🌐</span>
+            <div>
+              <div class="setting-label">Display Language</div>
+              <div class="setting-desc" id="lang-current-label">🇺🇸 English</div>
+            </div>
+          </div>
+          <span class="chevron">›</span>
+        </div>
+      </div>
+
+      <!-- ── 음성 지원 ── -->
+      <div class="section-title">Voice Support</div>
+
+      <!-- 토글 버튼 -->
+      <button class="voice-toggle-btn" id="voice-toggle-btn" onclick="toggleVoice()">
+        <div class="ptb-left">
+          <span>🔊</span>
+          <span>View / Change Voice</span>
+        </div>
+        <span class="ptb-arrow" id="voice-arrow">▼</span>
+      </button>
+
+      <!-- 요약 카드 2열 (여성 / 남성) -->
+      <div class="voice-sum-container" id="voice-sum-container">
+        <div class="voice-summary-card" onclick="openVoicePopup('f')">
+          <div class="voice-sum-emoji">👩</div>
+          <div class="voice-sum-name">Female Voice</div>
+          <div class="voice-sum-sub">6 types · Seoul~Chungcheong</div>
+          <div class="voice-sum-hint">Select →</div>
+        </div>
+        <div class="voice-summary-card" onclick="openVoicePopup('m')">
+          <div class="voice-sum-emoji">👨</div>
+          <div class="voice-sum-name">Male Voice</div>
+          <div class="voice-sum-sub">6 types · Seoul~Chungcheong</div>
+          <div class="voice-sum-hint">Select →</div>
+        </div>
+      </div>
+
+      <!-- 말하기 속도 (항상 표시) -->
+      <div class="setting-card" style="margin-bottom:10px;">
+        <div class="slider-row">
+          <span class="setting-label">🎚 Speaking Speed</span>
+          <span class="slider-val" id="speed-val">1.0x</span>
+        </div>
+        <input type="range" class="speed-slider" id="speed-slider" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateSpeed(this.value)">
+        <div class="slider-labels"><span>Slow</span><span>Fast</span></div>
+      </div>
+
+      <!-- ── 음성 팝업: 여성 ── -->
+      <div class="voice-popup-overlay" id="popup-voice-f" onclick="closeVoicePopup('f')">
+        <div class="voice-popup" onclick="event.stopPropagation()">
+          <div class="voice-popup-header">
+            <div class="voice-popup-title">👩 Select Female Voice</div>
+            <button class="voice-popup-close" onclick="closeVoicePopup('f')">✕</button>
+          </div>
+          <div class="voice-popup-body">
+            <div class="voice-region-label">🆓 Free · Standard</div>
+            <div class="voice-pop-row selected" id="vf-seoul" onclick="selectVoicePop('f','seoul',this)">
+              <span class="voice-pop-icon">👩</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Seoul Female</div>
+                <div class="voice-pop-sub">Standard · Clear and distinct pronunciation</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check" id="vfc-seoul">✓</span>
+                <span class="voice-pop-badge vpb-free">Free</span>
+              </div>
+            </div>
+            <div class="voice-region-label">⚡ Pro or above · Regional dialect</div>
+            <div class="voice-pop-row locked" onclick="showToast('Pro plan or above required ⚡')">
+              <span class="voice-pop-icon">👩‍🦱</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Busan Female</div>
+                <div class="voice-pop-sub">Gyeongsang · Lively and strong intonation</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check"></span>
+                <span class="voice-pop-badge vpb-pro">⚡ Pro</span>
+              </div>
+            </div>
+            <div class="voice-pop-row locked" onclick="showToast('Pro plan or above required ⚡')">
+              <span class="voice-pop-icon">👩‍🦳</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Jeolla Female</div>
+                <div class="voice-pop-sub">Jeolla · Soft and warm speech</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check"></span>
+                <span class="voice-pop-badge vpb-pro">⚡ Pro</span>
+              </div>
+            </div>
+            <div class="voice-pop-row locked" onclick="showToast('Pro plan or above required ⚡')">
+              <span class="voice-pop-icon">👩‍💼</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Gangwon Female</div>
+                <div class="voice-pop-sub">Gangwon · Innocent and clear intonation</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check"></span>
+                <span class="voice-pop-badge vpb-pro">⚡ Pro</span>
+              </div>
+            </div>
+            <div class="voice-region-label">🔥 Max exclusive · Rare dialects</div>
+            <div class="voice-pop-row locked" onclick="showToast('Max plan required 🔥')">
+              <span class="voice-pop-icon">🧑‍🎓</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Jeju Female</div>
+                <div class="voice-pop-sub">Jeju Island · Unique and exotic intonation</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check"></span>
+                <span class="voice-pop-badge vpb-max">🔥 Max</span>
+              </div>
+            </div>
+            <div class="voice-pop-row locked" onclick="showToast('Max plan required 🔥')">
+              <span class="voice-pop-icon">👩‍🍳</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Chungcheong Female</div>
+                <div class="voice-pop-sub">Chungcheong · Relaxed and laid-back speech</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check"></span>
+                <span class="voice-pop-badge vpb-max">🔥 Max</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 음성 팝업: 남성 ── -->
+      <div class="voice-popup-overlay" id="popup-voice-m" onclick="closeVoicePopup('m')">
+        <div class="voice-popup" onclick="event.stopPropagation()">
+          <div class="voice-popup-header">
+            <div class="voice-popup-title">👨 Select Male Voice</div>
+            <button class="voice-popup-close" onclick="closeVoicePopup('m')">✕</button>
+          </div>
+          <div class="voice-popup-body">
+            <div class="voice-region-label">🆓 Free · Standard</div>
+            <div class="voice-pop-row" id="vm-seoul" onclick="selectVoicePop('m','seoul',this)">
+              <span class="voice-pop-icon">👨</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Seoul Male</div>
+                <div class="voice-pop-sub">Standard · Stable and trustworthy pronunciation</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check" id="vmc-seoul"></span>
+                <span class="voice-pop-badge vpb-free">Free</span>
+              </div>
+            </div>
+            <div class="voice-region-label">⚡ Pro or above · Regional dialect</div>
+            <div class="voice-pop-row locked" onclick="showToast('Pro plan or above required ⚡')">
+              <span class="voice-pop-icon">👨‍🦱</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Busan Male</div>
+                <div class="voice-pop-sub">Gyeongsang · Strong and masculine intonation</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check"></span>
+                <span class="voice-pop-badge vpb-pro">⚡ Pro</span>
+              </div>
+            </div>
+            <div class="voice-pop-row locked" onclick="showToast('Pro plan or above required ⚡')">
+              <span class="voice-pop-icon">👨‍🦳</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Jeolla Male</div>
+                <div class="voice-pop-sub">Jeolla · Rich and warm speech</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check"></span>
+                <span class="voice-pop-badge vpb-pro">⚡ Pro</span>
+              </div>
+            </div>
+            <div class="voice-pop-row locked" onclick="showToast('Pro plan or above required ⚡')">
+              <span class="voice-pop-icon">👨‍🌾</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Gangwon Male</div>
+                <div class="voice-pop-sub">Gangwon · Honest and straightforward intonation</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check"></span>
+                <span class="voice-pop-badge vpb-pro">⚡ Pro</span>
+              </div>
+            </div>
+            <div class="voice-region-label">🔥 Max exclusive · Rare dialects</div>
+            <div class="voice-pop-row locked" onclick="showToast('Max plan required 🔥')">
+              <span class="voice-pop-icon">👨‍🎓</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Jeju Male</div>
+                <div class="voice-pop-sub">Jeju Island · Deep and distinctive intonation</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check"></span>
+                <span class="voice-pop-badge vpb-max">🔥 Max</span>
+              </div>
+            </div>
+            <div class="voice-pop-row locked" onclick="showToast('Max plan required 🔥')">
+              <span class="voice-pop-icon">👨‍🍳</span>
+              <div class="voice-pop-info">
+                <div class="voice-pop-name">Chungcheong Male</div>
+                <div class="voice-pop-sub">Chungcheong · Easygoing and warm speech</div>
+              </div>
+              <div class="voice-pop-right">
+                <span class="voice-pop-check"></span>
+                <span class="voice-pop-badge vpb-max">🔥 Max</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 편의 기능 ── -->
+      <div class="section-title">Convenience</div>
+      <div class="setting-card">
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon">🌙</span>
+            <div>
+              <div class="setting-label">Dark Mode</div>
+              <div class="setting-desc">Dark theme to reduce eye strain</div>
+            </div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="dark-toggle" onchange="toggleDark(this)">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="divider"></div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon">🔔</span>
+            <div>
+              <div class="setting-label">Tourist Spot Alerts</div>
+              <div class="setting-desc">Notify when near famous landmarks</div>
+            </div>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="divider"></div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon">⭐</span>
+            <div>
+              <div class="setting-label">Favorites Sync</div>
+              <div class="setting-desc">Auto-sync favorites across devices</div>
+            </div>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="divider"></div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon">🔄</span>
+            <div>
+              <div class="setting-label">Auto Translate</div>
+              <div class="setting-desc">Auto-detect and translate Korean text</div>
+            </div>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="divider"></div>
+        <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:8px;">
+          <div class="setting-info">
+            <span class="setting-icon">🔤</span>
+            <div class="setting-label">Font Size</div>
+          </div>
+          <div class="font-size-row">
+            <button class="font-btn" data-size="small" onclick="setFont('small',this)">Small</button>
+            <button class="font-btn active" data-size="medium" onclick="setFont('medium',this)">Medium</button>
+            <button class="font-btn" data-size="large" onclick="setFont('large',this)">Large</button>
+            <button class="font-btn" data-size="xlarge" onclick="setFont('xlarge',this)">XL</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 계정 ── -->
+      <div class="section-title">Account</div>
+      <div class="setting-card">
+        <div class="setting-row tap-row" onclick="showToast('Edit Profile')">
+          <div class="setting-info"><span class="setting-icon">👤</span><div class="setting-label">Edit Profile</div></div>
+          <span class="chevron">›</span>
+        </div>
+        <div class="divider"></div>
+        <div class="setting-row tap-row" onclick="showToast('Data Reset Warning')">
+          <div class="setting-info"><span class="setting-icon">🗑️</span><div class="setting-label" style="color:#c0392b;">Reset Data</div></div>
+          <span class="chevron" style="color:#c0392b;">›</span>
+        </div>
+      </div>
+
+      <!-- ── 개발자 설정 ── -->
+      <div class="section-title">Developer Settings</div>
+      <div class="setting-card">
+        <div class="setting-row tap-row" onclick="showUrlConfig()">
+          <div class="setting-info">
+            <span class="setting-icon">🔗</span>
+            <div>
+              <div class="setting-label">Server URL</div>
+              <div class="setting-desc" id="server-url-preview">Not set (tap to change)</div>
+            </div>
+          </div>
+          <span class="chevron">›</span>
+        </div>
+        <div class="divider"></div>
+        <div class="setting-row tap-row" onclick="clearServerUrl()">
+          <div class="setting-info"><span class="setting-icon">🧹</span><div class="setting-label" style="color:#c0392b;">Clear URL Cache</div></div>
+          <span class="chevron" style="color:#c0392b;">›</span>
+        </div>
+      </div>
+
+      <div style="height:16px;"></div>
+    </div>
+  </section>
+
+  <!-- ── 언어 선택 모달 ── -->
+  <div class="lang-modal-overlay" id="lang-modal-overlay" onclick="closeLangModal()">
+    <div class="lang-modal" onclick="event.stopPropagation()">
+      <div class="lang-modal-header">
+        <span class="lang-modal-title">🌐 Select Language</span>
+        <button class="lang-modal-close" onclick="closeLangModal()">✕</button>
+      </div>
+      <div class="lang-modal-body">
+        <div class="lang-region-label">🌏 Asia · Pacific</div>
+        <div class="lang-list">
+          <div class="lang-row" id="langrow-ko" onclick="selectLangModal(this,'ko','🇰🇷','한국어','Korea')">
+            <span class="lang-flag">🇰🇷</span>
+            <div class="lang-info"><div class="lang-name">한국어</div><div class="lang-country">대한민국</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-ja" onclick="selectLangModal(this,'ja','🇯🇵','日本語','Japan')">
+            <span class="lang-flag">🇯🇵</span>
+            <div class="lang-info"><div class="lang-name">日本語</div><div class="lang-country">日本</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-zh" onclick="selectLangModal(this,'zh','🇨🇳','中文(简体)','China')">
+            <span class="lang-flag">🇨🇳</span>
+            <div class="lang-info"><div class="lang-name">中文 (简体)</div><div class="lang-country">中国</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-zht" onclick="selectLangModal(this,'zht','🇹🇼','中文(繁體)','Taiwan')">
+            <span class="lang-flag">🇹🇼</span>
+            <div class="lang-info"><div class="lang-name">中文 (繁體)</div><div class="lang-country">台灣</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-vi" onclick="selectLangModal(this,'vi','🇻🇳','Tiếng Việt','Vietnam')">
+            <span class="lang-flag">🇻🇳</span>
+            <div class="lang-info"><div class="lang-name">Tiếng Việt</div><div class="lang-country">Việt Nam</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-th" onclick="selectLangModal(this,'th','🇹🇭','ภาษาไทย','Thailand')">
+            <span class="lang-flag">🇹🇭</span>
+            <div class="lang-info"><div class="lang-name">ภาษาไทย</div><div class="lang-country">ประเทศไทย</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-id" onclick="selectLangModal(this,'id','🇮🇩','Bahasa Indonesia','Indonesia')">
+            <span class="lang-flag">🇮🇩</span>
+            <div class="lang-info"><div class="lang-name">Bahasa Indonesia</div><div class="lang-country">Indonesia</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-hi" onclick="selectLangModal(this,'hi','🇮🇳','हिन्दी','India')">
+            <span class="lang-flag">🇮🇳</span>
+            <div class="lang-info"><div class="lang-name">हिन्दी</div><div class="lang-country">भारत</div></div>
+            <span class="lang-check"></span>
+          </div>
+        </div>
+
+        <div class="lang-region-label">🌍 Europe · Americas</div>
+        <div class="lang-list">
+          <div class="lang-row active" id="langrow-en" onclick="selectLangModal(this,'en','🇺🇸','English','United States')">
+            <span class="lang-flag">🇺🇸</span>
+            <div class="lang-info"><div class="lang-name">English</div><div class="lang-country">United States</div></div>
+            <span class="lang-check">✓</span>
+          </div>
+          <div class="lang-row" id="langrow-en-gb" onclick="selectLangModal(this,'en-gb','🇬🇧','English (UK)','United Kingdom')">
+            <span class="lang-flag">🇬🇧</span>
+            <div class="lang-info"><div class="lang-name">English (UK)</div><div class="lang-country">United Kingdom</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-es" onclick="selectLangModal(this,'es','🇪🇸','Español','España')">
+            <span class="lang-flag">🇪🇸</span>
+            <div class="lang-info"><div class="lang-name">Español</div><div class="lang-country">España</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-pt" onclick="selectLangModal(this,'pt','🇧🇷','Português','Brasil')">
+            <span class="lang-flag">🇧🇷</span>
+            <div class="lang-info"><div class="lang-name">Português</div><div class="lang-country">Brasil</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-fr" onclick="selectLangModal(this,'fr','🇫🇷','Français','France')">
+            <span class="lang-flag">🇫🇷</span>
+            <div class="lang-info"><div class="lang-name">Français</div><div class="lang-country">France</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-de" onclick="selectLangModal(this,'de','🇩🇪','Deutsch','Deutschland')">
+            <span class="lang-flag">🇩🇪</span>
+            <div class="lang-info"><div class="lang-name">Deutsch</div><div class="lang-country">Deutschland</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-it" onclick="selectLangModal(this,'it','🇮🇹','Italiano','Italia')">
+            <span class="lang-flag">🇮🇹</span>
+            <div class="lang-info"><div class="lang-name">Italiano</div><div class="lang-country">Italia</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-ru" onclick="selectLangModal(this,'ru','🇷🇺','Русский','Россия')">
+            <span class="lang-flag">🇷🇺</span>
+            <div class="lang-info"><div class="lang-name">Русский</div><div class="lang-country">Россия</div></div>
+            <span class="lang-check"></span>
+          </div>
+        </div>
+
+        <div class="lang-region-label">🌍 Middle East · Africa</div>
+        <div class="lang-list">
+          <div class="lang-row" id="langrow-ar" onclick="selectLangModal(this,'ar','🇸🇦','العربية','المملكة العربية السعودية')">
+            <span class="lang-flag">🇸🇦</span>
+            <div class="lang-info"><div class="lang-name">العربية</div><div class="lang-country">المملكة العربية السعودية</div></div>
+            <span class="lang-check"></span>
+          </div>
+          <div class="lang-row" id="langrow-tr" onclick="selectLangModal(this,'tr','🇹🇷','Türkçe','Türkiye')">
+            <span class="lang-flag">🇹🇷</span>
+            <div class="lang-info"><div class="lang-name">Türkçe</div><div class="lang-country">Türkiye</div></div>
+            <span class="lang-check"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 서버 URL 설정 모달 ── -->
+  <div id="url-config-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9000;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(6px);">
+    <div style="width:100%;max-width:360px;background:var(--surface);border-radius:22px;overflow:hidden;animation:slideUp 0.25s ease;">
+      <div style="padding:20px 20px 14px;border-bottom:1px solid var(--border-strong);">
+        <div style="font-family:'Hahmlet',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:4px;">🔗 Server Address Setup</div>
+        <div style="font-size:11px;color:var(--muted);">Enter your ngrok tunnel address.<br>It will be saved automatically after input.</div>
+      </div>
+      <div style="padding:16px 20px;">
+        <input id="url-config-input" type="url" placeholder="http://192.168.x.x:8000 or https://xxxx.ngrok-free.dev"
+          style="width:100%;border:1.5px solid var(--border-strong);border-radius:12px;padding:12px;font-size:12px;background:white;color:var(--ink);margin-bottom:12px;font-family:'Noto Sans KR',sans-serif;"
+          onkeydown="if(event.key==='Enter')saveServerUrl()">
+        <div style="font-size:10px;color:var(--ghost);margin-bottom:14px;">
+          <span style="color:var(--green);font-weight:700;">●</span> Used for Chat Buddy (AI chat) · AAK! real-time data.
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="skipServerUrl()" style="flex:1;padding:11px;border-radius:12px;border:1.5px solid var(--border-strong);background:var(--surface-2);font-size:12px;color:var(--muted);cursor:pointer;font-family:'Noto Sans KR',sans-serif;">Set up later</button>
+          <button onclick="saveServerUrl()" style="flex:2;padding:11px;border-radius:12px;border:none;background:var(--red);color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:'Hahmlet',serif;">Save & Connect</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 카테고리 선택 바텀시트 ── -->
+  <div class="cat-sheet-overlay" id="cat-sheet-overlay" onclick="closeCatSheet()">
+    <div class="cat-sheet" onclick="event.stopPropagation()">
+      <div class="cat-sheet-title">🎯 Which situation would you like to practice?</div>
+      <div class="cat-sheet-sub">Selecting a situation helps you practice more accurately</div>
+      <div class="cat-sheet-grid">
+        <div class="cat-sheet-btn" id="csb-식당" onclick="selectCat('식당','🍽️','Restaurant')">
+          <span class="cs-icon">🍽️</span>
+          <span class="cs-label">Restaurant</span>
+        </div>
+        <div class="cat-sheet-btn" id="csb-카페" onclick="selectCat('식당','☕','Cafe')">
+          <span class="cs-icon">☕</span>
+          <span class="cs-label">Cafe</span>
+        </div>
+        <div class="cat-sheet-btn" id="csb-호텔" onclick="selectCat('호텔','🏨','Hotel')">
+          <span class="cs-icon">🏨</span>
+          <span class="cs-label">Hotel</span>
+        </div>
+        <div class="cat-sheet-btn" id="csb-대중교통" onclick="selectCat('대중교통','🚇','Subway·Bus')">
+          <span class="cs-icon">🚇</span>
+          <span class="cs-label">Subway·Bus</span>
+        </div>
+        <div class="cat-sheet-btn" id="csb-공항" onclick="selectCat('공항','✈️','Airport')">
+          <span class="cs-icon">✈️</span>
+          <span class="cs-label">Airport</span>
+        </div>
+        <div class="cat-sheet-btn" id="csb-관광지" onclick="selectCat('관광지','🏯','Tourist Site')">
+          <span class="cs-icon">🏯</span>
+          <span class="cs-label">Tourist Site</span>
+        </div>
+        <div class="cat-sheet-btn" id="csb-상점" onclick="selectCat('상점','🛍️','Shopping')">
+          <span class="cs-icon">🛍️</span>
+          <span class="cs-label">Shopping</span>
+        </div>
+        <div class="cat-sheet-btn" id="csb-병원" onclick="selectCat('병원','🏥','Hospital')">
+          <span class="cs-icon">🏥</span>
+          <span class="cs-label">Hospital</span>
+        </div>
+        <div class="cat-sheet-btn" id="csb-거리" onclick="selectCat('거리','🗺️','Navigation')">
+          <span class="cs-icon">🗺️</span>
+          <span class="cs-label">Navigation</span>
+        </div>
+      </div>
+      <button class="cat-sheet-confirm" onclick="confirmCatSheet()">Confirm Selection</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" id="nav-home" onclick="switchTab('home')">
+      <div class="nav-icon">🏠</div>
+      <div>Home</div>
+    </div>
+    <div class="nav-item" id="nav-lens" onclick="switchTab('lens')">
+      <div class="nav-icon">📷</div>
+      <div>K-Lens</div>
+    </div>
+    <div class="nav-item" id="nav-chat" onclick="switchTab('chat')">
+      <div class="nav-icon">💬</div>
+      <div>Chat</div>
+    </div>
+    <div class="nav-item" id="nav-aak" onclick="switchTab('aak')">
+      <div class="nav-icon">ℹ️</div>
+      <div>AAK!</div>
+    </div>
+    <div class="nav-item" id="nav-settings" onclick="switchTab('settings')">
+      <div class="nav-icon">⚙️</div>
+      <div>Settings</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  
+/* ── 서버 및 API 설정 ─────────────────────── */
+  // 로컬 스토리지 키 이름을 'serverUrl'로 통일합니다.
+  let SERVER_URL = localStorage.getItem('serverUrl') || 'https://tingle-octopus-proxy.ngrok-free.dev';
+  const CHAT_API = SERVER_URL ? (SERVER_URL.replace(/\/$/, "") + "/chat") : "";
+
+  // 서버 설정 모달 띄우기
+  function showUrlConfig() {
+    const overlay = document.getElementById('url-config-overlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+      const input = document.getElementById('url-config-input');
+      if (SERVER_URL) input.value = SERVER_URL;
+    }
+  }
+
+  // 서버 주소 저장 함수 (사용자 요청 반영)
+  function saveServerUrl() {
+    const input = document.getElementById('url-config-input');
+    let val = input.value.trim();
+    
+    if (!val) {
+      alert("서버 주소를 입력해 주세요.");
+      return;
+    }
+
+    // 1. 유효성 검사: http:// 또는 https://로 시작하는지 확인
+    if (!val.startsWith('http://') && !val.startsWith('https://')) {
+      alert("⚠️ http:// 또는 https:// 로 시작하는 주소를 입력하세요");
+      input.focus();
+      return;
+    }
+
+    // 주소 정제 및 저장
+    val = val.replace(/\/$/, "");
+    localStorage.setItem('serverUrl', val);
+    
+    // 4. 성공 메시지 출력 및 UI 닫기
+    alert("✅ 서버 주소 저장됨\n설정된 주소: " + val);
+    document.getElementById('url-config-overlay').style.display = 'none';
+    
+    // 5. 페이지를 새로고침하여 변경사항 즉시 적용
+    location.reload();
+
+    // 3. 페이지 로드 시 주소가 없으면 설정창 띄우기
+window.addEventListener('DOMContentLoaded', () => {
+  if (!localStorage.getItem('serverUrl')) {
+    document.getElementById('url-config-overlay').style.display = 'flex';
+  }
+});
+  }
+
+  // 주소 초기화 함수
+  function clearServerUrl() {
+    if(confirm("Reset server address?")) {
+      localStorage.removeItem('serverUrl');
+      location.reload();
+    }
+  }
+function updateServerPreview() {
+  const el = document.getElementById('server-url-preview');
+  if (!el) return;
+  el.textContent = SERVER_URL
+    ? SERVER_URL.replace('https://', '').replace('http://', '').substring(0, 32) + (SERVER_URL.length > 40 ? '…' : '')
+    : '미설정 (탭하여 변경)';
+}
+function skipServerUrl() {
+  document.getElementById('url-config-overlay').style.display = 'none';
+  showToast('⚠️ AI chat & live data not connected');
+}
+
+// 앱 시작 시 URL 없으면 설정 모달 표시
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('serverUrl');
+  if (!saved) {
+    document.getElementById('url-config-overlay').style.display = 'flex';
+  }
+});
+
+// ── 설정 저장/복원 ──
+function restoreSettings() {
+  // 다크모드
+  const dark = localStorage.getItem('aak_dark') === '1';
+  if (dark) {
+    document.querySelector('.phone').classList.add('dark-mode');
+    const cb = document.querySelector('input[onchange*="toggleDark"]');
+    if (cb) cb.checked = true;
+  }
+  // 폰트 크기
+  const fs = localStorage.getItem('aak_font');
+  if (fs) {
+    const map = { small:'11px', medium:'13px', large:'15px', xlarge:'17px' };
+    if (map[fs]) {
+      document.querySelector('.phone').style.fontSize = map[fs];
+      document.querySelectorAll('.font-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.size === fs);
+      });
+    }
+  }
+  // 언어
+  const lang = localStorage.getItem('aak_lang') || 'en';
+  const flag = localStorage.getItem('aak_lang_flag') || '🇺🇸';
+  const name = localStorage.getItem('aak_lang_name') || 'English';
+  if (lang && flag && name) {
+    const el = document.getElementById('lang-current-label');
+    if (el) el.textContent = `${flag} ${name}`;
+    document.querySelectorAll('.lang-row').forEach(r => r.classList.remove('active'));
+    const row = document.getElementById(`langrow-${lang}`);
+    if (row) {
+      row.classList.add('active');
+      const chk = row.querySelector('.lang-check');
+      if (chk) chk.textContent = '✓';
+    }
+  }
+}
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+}
+updateClock();
+setInterval(updateClock, 10000);
+
+function switchTab(tab) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const targetScreen = document.getElementById(`screen-${tab}`);
+  const targetNav = document.getElementById(`nav-${tab}`);
+  if (targetScreen) targetScreen.classList.add('active');
+  if (targetNav) targetNav.classList.add('active');
+  // 말동무 탭 진입 시 히스토리 갱신
+  if (tab === 'chat') fetchAndRenderHistory();
+  if (tab === 'lens') {
+    if (localStorage.getItem('aak_lens_history_cleared') === '1') {
+      lensHistories = [];
+    }
+    renderLensHistory();
+  }
+  // AAK! 탭 진입 시 위치 요청 + 서버 상태 배너
+  if (tab === 'aak') {
+    requestUserLocation();
+    const banner = document.getElementById('aak-no-server-banner');
+    if (banner) banner.style.display = SERVER_URL ? 'none' : 'block';
+  }
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+function selectOption(el) {
+  el.parentElement.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
+  el.classList.add('active');
+  showToast(`${el.textContent} 시나리오 선택`);
+}
+
+function updateToggleText() {
+  const toggle  = document.getElementById('mode-toggle');
+  const labelOn  = document.getElementById('label-on');
+  const labelOff = document.getElementById('label-off');
+  if (toggle.checked) {
+    labelOn.classList.remove('dimmed');
+    labelOff.classList.remove('visible');
+  } else {
+    labelOn.classList.add('dimmed');
+    labelOff.classList.add('visible');
+  }
+}
+
+/* ── 구독 플랜 접기/펼치기 ── */
+function togglePlans() {
+  const container = document.getElementById('plans-container');
+  const btn       = document.getElementById('plan-toggle-btn');
+  const isOpen    = container.classList.contains('open');
+  container.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
+
+/* ── 플랜 상세 팝업 ── */
+function openPlanPopup(plan) {
+  document.getElementById(`popup-${plan}`).classList.add('open');
+}
+function closePlanPopup(plan) {
+  document.getElementById(`popup-${plan}`).classList.remove('open');
+}
+
+/* ── 언어 모달 ── */
+function openLangModal() {
+  document.getElementById('lang-modal-overlay').classList.add('open');
+}
+function closeLangModal() {
+  document.getElementById('lang-modal-overlay').classList.remove('open');
+}
+function selectLangModal(el, code, flag, name, country) {
+  document.querySelectorAll('.lang-row').forEach(r => {
+    r.classList.remove('active');
+    r.querySelector('.lang-check').textContent = '';
+  });
+  el.classList.add('active');
+  el.querySelector('.lang-check').textContent = '✓';
+  document.getElementById('lang-current-label').textContent = `${flag} ${name}`;
+  localStorage.setItem('aak_lang', code);
+  localStorage.setItem('aak_lang_flag', flag);
+  localStorage.setItem('aak_lang_name', name);
+  setTimeout(() => {
+    closeLangModal();
+    showToast(`${flag} ${name} 언어로 변경됨`);
+  }, 180);
+}
+
+/* ── 음성 토글+팝업 ── */
+function toggleVoice() {
+  const c   = document.getElementById('voice-sum-container');
+  const btn = document.getElementById('voice-toggle-btn');
+  const open = c.classList.contains('open');
+  c.classList.toggle('open', !open);
+  btn.classList.toggle('open', !open);
+}
+function openVoicePopup(gender) {
+  document.getElementById(`popup-voice-${gender}`).classList.add('open');
+}
+function closeVoicePopup(gender) {
+  document.getElementById(`popup-voice-${gender}`).classList.remove('open');
+}
+/* 선택 시 체크 표시 */
+function selectVoicePop(gender, key, el) {
+  if (el.classList.contains('locked')) return;
+  // 같은 팝업 내 모든 행에서 selected 제거 + check 클리어
+  el.closest('.voice-popup-body').querySelectorAll('.voice-pop-row').forEach(r => {
+    r.classList.remove('selected');
+    const chk = r.querySelector('.voice-pop-check');
+    if (chk) chk.textContent = '';
+  });
+  el.classList.add('selected');
+  el.querySelector('.voice-pop-check').textContent = '✓';
+  const name = el.querySelector('.voice-pop-name').textContent;
+  setTimeout(() => {
+    closeVoicePopup(gender);
+    showToast(`🔊 ${name} 음성 선택됨`);
+  }, 160);
+}
+
+function updateSpeed(val) {
+  document.getElementById('speed-val').textContent = parseFloat(val).toFixed(1) + 'x';
+}
+
+/* ── 다크 모드 ── */
+function toggleDark(cb) {
+  const phone = document.querySelector('.phone');
+  if (cb.checked) {
+    phone.classList.add('dark-mode');
+    localStorage.setItem('aak_dark', '1');
+    showToast('🌙 Dark mode on');
+  } else {
+    phone.classList.remove('dark-mode');
+    localStorage.setItem('aak_dark', '0');
+    showToast('☀️ Light mode on');
+  }
+}
+
+/* ── 글자 크기 ── */
+function setFont(size, el) {
+  document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  const map = { small:'11px', medium:'13px', large:'15px', xlarge:'17px' };
+  document.querySelector('.phone').style.fontSize = map[size];
+  localStorage.setItem('aak_font', size);
+  showToast(`🔤 Font size: ${el.textContent}`);
+}
+
+/* ── 사진 첨부 ── */
+function triggerAttach() {
+  document.getElementById('chat-file-input').click();
+}
+function handleAttach(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('attach-img').src = e.target.result;
+    const preview = document.getElementById('attach-preview');
+    preview.style.display = 'block';
+    showToast('📎 Photo attached');
+  };
+  reader.readAsDataURL(file);
+}
+function removeAttach() {
+  document.getElementById('attach-preview').style.display = 'none';
+  document.getElementById('attach-img').src = '';
+  document.getElementById('chat-file-input').value = '';
+  showToast('Photo removed');
+}
+
+/* ── K-렌즈 촬영 처리 ── */
+function handleLensCapture(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async e => {
+    const img = document.getElementById('lens-preview-img');
+    const guide = document.getElementById('lens-guide');
+    const analyzing = document.getElementById('lens-analyzing');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    guide.style.display = 'none';
+    analyzing.style.display = 'flex';
+
+    let spinIcons = ['🔍','🔎','🏯','🏛','🎎','🔍'];
+    let si = 0;
+    const spin = setInterval(() => {
+      document.getElementById('lens-spin-icon').textContent = spinIcons[si++ % spinIcons.length];
+    }, 300);
+
+    // 데모용 폴백 결과
+    const demoResults = [
+      { icon:'🏯', title:'Geunjeongjeon Hall', sub:'Gyeongbokgung Palace · Main Hall',
+        desc:'The main throne hall of Gyeongbokgung Palace. It was used for royal ceremonies such as New Year greetings from officials, state events, and receiving foreign envoys. A grand two-story wooden structure spanning 25 bays.' },
+      { icon:'🏛', title:'Injeongjeon Hall', sub:'Changdeokgung Palace · Main Hall',
+        desc:'The main hall of Changdeokgung Palace, where Joseon kings met officials and held state events. It is the centerpiece of Changdeokgung, which is designated a UNESCO World Heritage Site.' },
+      { icon:'🏰', title:'Seokjojeon Hall', sub:'Deoksugung Palace · Western-style Building',
+        desc:'The only Western-style building within Deoksugung Palace, completed in 1910. Built in a Renaissance style, it currently operates as the Korean Empire History Museum.' },
+    ];
+
+    let result = null;
+
+    // 실제 API 시도
+    if (SERVER_URL) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(SERVER_URL + '/analyze', {
+          method: 'POST',
+          headers: { 'ngrok-skip-browser-warning': 'true' },
+          body: formData
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.success && data.result) {
+            const r = data.result;
+            const palaceIcon = {'경복궁':'🏯','창덕궁':'🏯','창경궁':'🏯','덕수궁':'🏛','경희궁':'🏛','종묘':'⛩️','칠궁':'🏛'}[r.palace.kor] || '🏯';
+            result = {
+              icon: palaceIcon,
+              title: r.building.eng,
+              titleKor: r.building.kor || r.palace.kor || r.building.eng,
+              sub: r.palace.eng + ' · ' + r.building.eng,
+              desc: r.description.eng
+            };
+          }
+        }
+      } catch(err) {
+        console.warn('K-렌즈 API 오류, 데모 모드로 전환:', err);
+      }
+    }
+
+    // API 실패 시 데모 결과 사용
+    if (!result) {
+      result = demoResults[Math.floor(Math.random() * demoResults.length)];
+      if (SERVER_URL) showToast('⚠️ Analysis server not responding, showing demo result');
+    }
+
+    clearInterval(spin);
+    analyzing.style.display = 'none';
+    document.getElementById('lens-result-icon').textContent = result.icon;
+    document.getElementById('lens-result-title').textContent = result.title;
+    document.getElementById('lens-result-title').dataset.kor = result.titleKor || result.title;
+    document.getElementById('lens-result-sub').textContent = result.sub;
+    document.getElementById('lens-result-desc').textContent = result.desc;
+    document.getElementById('lens-result-panel').style.display = 'block';
+    showToast('✅ Analysis complete!');
+    addLensHistory(result.icon, result.title, result.sub, result.desc, result.confidence);
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
+}
+
+let lensHistories = [];
+
+function addLensHistory(icon, title, sub, desc, confidence) {
+  if (localStorage.getItem('aak_lens_history_cleared') === '1') {
+    localStorage.removeItem('aak_lens_history_cleared');
+  }
+  const entry = { icon, title, sub, desc, confidence,
+    time: new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'}) };
+  lensHistories.unshift(entry);
+  if (lensHistories.length > 20) lensHistories = lensHistories.slice(0, 20);
+  renderLensHistory();
+}
+
+function renderLensHistory() {
+  const list = document.getElementById('lens-history-list');
+  if (!list) return;
+  const clearBtn = document.getElementById('clear-lens-history-btn');
+  if (lensHistories.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--ghost);font-size:12px;">No scan history yet</div>';
+    if (clearBtn) clearBtn.style.display = 'none';
+    return;
+  }
+  if (clearBtn) clearBtn.style.display = 'block';
+  list.innerHTML = lensHistories.map((h, idx) => `
+    <div class="info-card" style="cursor:pointer;margin-bottom:8px;display:flex;align-items:center;gap:10px;"
+         onclick="showLensHistoryDirect('${h.icon.replace(/'/g,"\'")}','${h.title.replace(/'/g,"\'")}','${h.sub.replace(/'/g,"\'")}','${h.desc.replace(/'/g,"\'")}','${h.confidence}','${h.time}')">
+      <span style="font-size:22px;flex-shrink:0;">${h.icon}</span>
+      <div style="flex:1;min-width:0;">
+        <h3 style="margin:0 0 3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Landmark · ${h.title}</h3>
+        <p style="margin:0;font-size:11px;color:var(--muted);">${h.time}</p>
+      </div>
+      <button onclick="event.stopPropagation();deleteLensHistoryItem(${idx})"
+        style="flex-shrink:0;background:none;border:none;font-size:15px;color:var(--ghost);cursor:pointer;padding:4px 6px;border-radius:6px;"
+        title="Delete">🗑️</button>
+    </div>`).join('');
+}
+
+function deleteLensHistoryItem(idx) {
+  lensHistories.splice(idx, 1);
+  renderLensHistory();
+}
+
+function clearAllLensHistory() {
+  if (!confirm('Delete all scan history?')) return;
+  lensHistories = [];
+  localStorage.setItem('aak_lens_history_cleared', '1');
+  renderLensHistory();
+  showToast('Scan history cleared');
+}
+
+function showLensHistory(id, title, sub, icon, desc, confidence, time) {
+  document.getElementById('lens-result-icon').textContent = icon;
+  document.getElementById('lens-result-title').textContent = title;
+  document.getElementById('lens-result-title').dataset.kor = title;
+  document.getElementById('lens-result-sub').textContent = sub;
+  document.getElementById('lens-result-desc').textContent = desc;
+  document.getElementById('lens-result-panel').style.display = 'block';
+  document.getElementById('lens-result-panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  showToast('📋 Viewing: ' + title);
+}
+
+function showLensHistoryDirect(icon, title, sub, desc, confidence, time) {
+  showLensHistory('', title, sub, icon, desc, confidence, time);
+}
+
+// 현재 결과창의 title 가져오기
+function _getLensResultTitle() {
+  const el = document.getElementById('lens-result-title');
+  return el ? el.textContent.trim() : '';
+}
+
+// View Map: Kakao Map 검색 연결
+function openKakaoMap() {
+  const el = document.getElementById('lens-result-title');
+  const title = el ? (el.dataset.kor || el.textContent.trim()) : '';
+  if (!title || title === 'Landmark' || title === 'Geunjeongjeon Hall') {
+    showToast('Please analyze a photo first');
+    return;
+  }
+  const query = encodeURIComponent(title);
+  window.open('https://map.kakao.com/?q=' + query, '_blank');
+}
+
+// Learn More: Chat 탭 Info 모드로 전환 후 자동 질문 전송
+function learnMoreInChat() {
+  const title = _getLensResultTitle();
+  if (!title || title === 'Landmark') {
+    showToast('Please analyze a photo first');
+    return;
+  }
+  switchTab('chat');
+  setTimeout(() => {
+    switchChatMode('info');
+    const input = document.getElementById('info-text-input');
+    if (input) {
+      input.value = 'Tell me about ' + title;
+      sendInfoMessage();
+    }
+  }, 200);
+}
+
+/* ── 말동무 모드 전환 ── */
+
+/* ── AAK 상세 패널 ── */
+const aakDetails = {
+  transit: {
+    title: '🚌 Transit',
+    body: `<div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="background:var(--surface-2);border-radius:14px;padding:14px;">
+        <div style="font-weight:700;font-size:13px;margin-bottom:8px;">🚇 Currently Operating Lines</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.8;">
+          Lines 1 · 2 · 3 — Normal service<br>
+          Line 4 — Delayed (~5 min) · Sadang Station incident<br>
+          Lines 5 · 6 — Normal service
+        </div>
+      </div>
+      <div style="background:var(--surface-2);border-radius:14px;padding:14px;">
+        <div style="font-weight:700;font-size:13px;margin-bottom:8px;">🚌 Nearby Bus Stops</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.8;">
+          Bus 273 — arriving in 3 min<br>
+          Bus 401 — arriving in 8 min<br>
+          Bus 7212 — arriving in 12 min
+        </div>
+      </div>
+    </div>`
+  },
+  'subway-congestion': {
+    title: '🚇 Subway Congestion',
+    body: `<div style="display:flex;flex-direction:column;gap:10px;">
+      ${[{n:'Line 1 Seoul Station',p:55,l:'Moderate'},{n:'Line 2 Gangnam',p:88,l:'Crowded'},{n:'Line 3 Gyeongbokgung',p:30,l:'Comfortable'},{n:'Line 4 Myeongdong',p:95,l:'Very Crowded'}].map((s, i) => {
+        const colors = ['#2e6b3e','#c0392b','#1a4a6b','#8b0000'];
+        return `<div style="background:var(--surface-2);border-radius:12px;padding:12px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:12px;font-weight:700;">${s.n}</span>
+            <span style="font-size:11px;font-weight:700;color:${colors[i]};">${s.l}</span>
+          </div>
+          <div style="height:6px;background:var(--border);border-radius:3px;">
+            <div style="height:100%;width:${s.p}%;background:${colors[i]};border-radius:3px;"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`
+  },
+  'place-congestion': {
+    title: '📍 Place Congestion',
+    body: `<div style="display:flex;flex-direction:column;gap:10px;">
+      ${[{n:'Gyeongbokgung',c:'Crowded',p:82},{n:'Myeongdong Street',c:'Very Crowded',p:95},{n:'Bukchon Hanok Village',c:'Moderate',p:48},{n:'Insadong',c:'Comfortable',p:28}].map(p => `
+      <div style="background:var(--surface-2);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;">
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;margin-bottom:4px;">${p.n}</div>
+          <div style="height:6px;background:var(--border);border-radius:3px;">
+            <div style="height:100%;width:${p.p}%;background:${p.p>80?'#c0392b':p.p>50?'#c8960c':'#2e6b3e'};border-radius:3px;"></div>
+          </div>
+        </div>
+        <span style="font-size:11px;font-weight:700;color:${p.p>80?'#c0392b':p.p>50?'#c8960c':'#2e6b3e'};min-width:70px;text-align:right;">${p.c}</span>
+      </div>`).join('')}
+    </div>`
+  },
+  travel: {
+    title: '🗺️ Domestic Travel',
+    body: `<div style="display:flex;flex-direction:column;gap:10px;">
+      ${[{n:'Gyeongbokgung + Bukchon Hanok Village',t:'Half-day trip',e:'🏯'},{n:'Namsan Tower Night View',t:'Evening trip',e:'🗼'},{n:'Jeju Island Olle Trail',t:'Overnight trip',e:'🍊'},{n:'Jeonju Hanok Village',t:'Day trip',e:'🎎'}].map(t => `
+      <div style="background:var(--surface-2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="showToast('View ${t.n} details')">
+        <span style="font-size:28px;">${t.e}</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--ink);">${t.n}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;">⏱ ${t.t}</div>
+        </div>
+        <span style="margin-left:auto;color:var(--ghost);">›</span>
+      </div>`).join('')}
+    </div>`
+  },
+  restaurant: {
+    title: '🍽️ Nearby Restaurants',
+    body: `<div style="display:flex;flex-direction:column;gap:10px;">
+      ${[{n:'Jinjja-ok Naengmyeon',c:'Cold Noodles · Korean',r:'4.8',d:'150m'},{n:'Samcheong-dong Sujebi',c:'Dough Soup · Korean',r:'4.6',d:'320m'},{n:'Gwanghwamun Gukbap',c:'Rice Soup · Korean',r:'4.7',d:'480m'},{n:'Bukchon Son-mandu',c:'Dumplings · Korean',r:'4.5',d:'620m'}].map(r => `
+      <div style="background:var(--surface-2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="showToast('View ${r.n} details')">
+        <div style="width:44px;height:44px;border-radius:12px;background:var(--hanji);display:flex;align-items:center;justify-content:center;font-size:22px;">🍜</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:var(--ink);">${r.n}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;">${r.c} · ${r.d}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;font-weight:700;color:var(--gold);">★ ${r.r}</div>
+        </div>
+      </div>`).join('')}
+    </div>`
+  },
+};
+
+
+
+/* ── 스핀 애니메이션 ── */
+const styleEl = document.createElement('style');
+styleEl.textContent = '@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }';
+document.head.appendChild(styleEl);
+
+</script>
+
+<script>
+// 키보드 올라올 때 입력창 위로 스크롤
+document.querySelectorAll('.chat-input, #info-text-input').forEach(input => {
+  input.addEventListener('focus', function() {
+    setTimeout(() => {
+      this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// ── 대화 히스토리 (메모리 기반) ──
+let conversationHistories = [];
+
+// ── 세션 ID 관리 ──────────────────────────────────────
+let currentChatSessionId = localStorage.getItem('aak_chat_session') || null;
+let currentInfoSessionId = localStorage.getItem('aak_info_session') || null;
+
+// ── GPS 위치 관리 ──────────────────────────────────────
+let userLat = null;   // 위도 (latitude)
+let userLon = null;   // 경도 (longitude)
+let locationStatus = 'unknown'; // 'unknown' | 'loading' | 'granted' | 'denied'
+
+function updateLocationBadge() {
+  const badge = document.getElementById('location-badge');
+  if (!badge) return;
+  const hints = [
+    document.getElementById('transit-loc-hint'),
+    document.getElementById('restaurant-loc-hint'),
+  ];
+  if (locationStatus === 'granted') {
+    badge.innerHTML = '📍 Using current location';
+    badge.style.color = 'var(--green, #2e6b3e)';
+    hints.forEach(h => { if (h) { h.textContent = 'Based on current location'; h.style.color = 'var(--green, #2e6b3e)'; } });
+  } else if (locationStatus === 'loading') {
+    badge.innerHTML = '📍 Getting location…';
+    badge.style.color = 'var(--muted)';
+  } else if (locationStatus === 'denied') {
+    badge.innerHTML = '📍 Location unavailable';
+    badge.style.color = 'var(--ghost)';
+    hints.forEach(h => { if (h) { h.textContent = 'Seoul major areas'; h.style.color = ''; } });
+  } else {
+    badge.innerHTML = '';
+  }
+}
+
+function requestUserLocation() {
+  if (!navigator.geolocation) {
+    locationStatus = 'denied';
+    updateLocationBadge();
+    return;
+  }
+  // 이미 위치를 갖고 있으면 다시 요청하지 않음 (10분 캐시)
+  if (locationStatus === 'granted' && userLat !== null) {
+    updateLocationBadge();
+    return;
+  }
+  locationStatus = 'loading';
+  updateLocationBadge();
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      userLat = pos.coords.latitude;
+      userLon = pos.coords.longitude;
+      locationStatus = 'granted';
+      updateLocationBadge();
+    },
+    (err) => {
+      console.warn('위치 접근 실패:', err.message);
+      locationStatus = 'denied';
+      updateLocationBadge();
+    },
+    { timeout: 8000, maximumAge: 600000, enableHighAccuracy: false }
+  );
+}
+
+function _newChatSession() {
+  currentChatSessionId = null;
+  localStorage.removeItem('aak_chat_session');
+}
+function _newInfoSession() {
+  currentInfoSessionId = null;
+  localStorage.removeItem('aak_info_session');
+}
+
+function extractKeyword(text) {
+  const quoted = text.match(/["']([^"']+)["']/);
+  if (quoted) return quoted[1];
+  const patterns = [
+    // 영어 패턴 — 앞 노이즈 제거 후 핵심 명사 추출
+    /(?:tell me about|what is|explain|describe|show me|about)\s+(?:the\s+)?(.+?)(?:\?|$)/i,
+    /(?:how (?:do i|to|does))\s+(.+?)(?:\?|$)/i,
+    // 한국어 패턴
+    /(.+?)에 대해/,/(.+?)이란/,/(.+?)란/,
+    /(.+?)은 뭐/,/(.+?)는 뭐/,/(.+?)이 뭐/,
+    /(.+?) 알려줘/,/(.+?) 설명해/,/(.+?) 뭐야/,
+  ];
+  for (const p of patterns) {
+    const m = text.match(p);
+    if (m && m[1].trim().length > 0) {
+      const kw = m[1].trim().replace(/[?!。？！]$/,'');
+      return kw.length <= 20 ? kw : kw.substring(0,18)+'...';
+    }
+  }
+  const cleaned = text.replace(/[?!。？！]/g,'').trim();
+  return cleaned.length <= 15 ? cleaned : cleaned.substring(0,13)+'...';
+}
+
+function getEmoji(keyword) {
+  const kl = keyword.toLowerCase();
+  const map = {
+    // 한국어
+    '비빔밥':'🍚','김치':'🥬','불고기':'🥩','삼겹살':'🥓',
+    '짜장':'🍜','냉면':'🍜','라면':'🍜','떡볶이':'🌶️',
+    '음식':'🍽️','식당':'🍽️','맛집':'🍽️','요리':'🍽️',
+    '지하철':'🚇','버스':'🚌','교통':'🚌','길':'🗺️','택시':'🚕',
+    '경복궁':'🏯','궁':'🏯','한옥':'🏘️','사찰':'⛩️','절':'⛩️',
+    '한복':'👘','문화':'🎭','역사':'📚','축제':'🎉',
+    '소주':'🍶','막걸리':'🍶','술':'🍶','맥주':'🍺',
+    '카페':'☕','커피':'☕','쇼핑':'🛍️','시장':'🏪',
+    '호텔':'🏨','숙소':'🏨','K-pop':'🎵','드라마':'📺',
+    '병원':'🏥','약':'💊',
+    // 영어
+    'kimchi':'🥬','bibimbap':'🍚','bulgogi':'🥩','tteokbokki':'🌶️',
+    'ramyeon':'🍜','naengmyeon':'🍜','samgyeopsal':'🥓','japchae':'🍜',
+    'food':'🍽️','restaurant':'🍽️','cuisine':'🍽️','dish':'🍽️','eat':'🍽️',
+    'subway':'🚇','bus':'🚌','taxi':'🚕','transport':'🚌','transit':'🚌',
+    'palace':'🏯','temple':'⛩️','shrine':'⛩️','hanok':'🏘️','fortress':'🏯',
+    'hanbok':'👘','culture':'🎭','history':'📚','festival':'🎉','tradition':'🎎',
+    'soju':'🍶','makgeolli':'🍶','alcohol':'🍶','beer':'🍺',
+    'cafe':'☕','coffee':'☕','shopping':'🛍️','market':'🏪',
+    'hotel':'🏨','accommodation':'🏨','kpop':'🎵','drama':'📺',
+    'hospital':'🏥','medicine':'💊','pharmacy':'💊',
+    'gyeongbokgung':'🏯','changdeokgung':'🏯','deoksugung':'🏛️',
+    'namsan':'🗼','bukchon':'🏘️','insadong':'🎎','myeongdong':'🛍️',
+    'hongdae':'🎵','gangnam':'🏙️','itaewon':'🌍','jeonju':'🎎',
+    'jeju':'🍊','busan':'🌊',
+  };
+  for (const [key, emoji] of Object.entries(map))
+    if (kl.includes(key)) return emoji;
+  return '💬';
+}
+
+function saveToHistory(keyword, mode, reply) {
+  const sessionId = mode === 'conversation' ? currentChatSessionId : currentInfoSessionId;
+  const entry = {
+    id: sessionId || Date.now(),
+    keyword,
+    emoji: getEmoji(keyword),
+    mode,
+    preview: reply ? reply.substring(0,40)+'...' : '',
+    time: new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),
+    session_id: sessionId,
+  };
+
+  // 같은 세션이면 맨 앞으로 이동 + 업데이트, 새 세션이면 추가
+  const idx = conversationHistories.findIndex(h => h.session_id && h.session_id === sessionId);
+  if (idx !== -1) {
+    conversationHistories.splice(idx, 1);  // 기존 항목 제거
+  }
+  conversationHistories.unshift(entry);    // 맨 앞에 삽입(최신순)
+
+  if (conversationHistories.length > 20)
+    conversationHistories = conversationHistories.slice(0, 20);
+  renderHistoryList();
+}
+
+// 서버에서 세션 목록 불러와 히스토리 탭 갱신
+async function fetchAndRenderHistory() {
+  if (!SERVER_URL) { renderHistoryList(); return; }
+  try {
+    const res = await fetch(SERVER_URL + '/history/sessions?limit=20', {
+      headers: {'ngrok-skip-browser-warning':'true'}
+    });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const clearedAt = parseInt(localStorage.getItem('aak_history_cleared_at') || '0');
+    let sessions = data.sessions || [];
+    if (clearedAt > 0) {
+      sessions = sessions.filter(s => {
+        if (!s.updated_at) return false;
+        return new Date(s.updated_at).getTime() > clearedAt;
+      });
+    }
+    // 서버 목록에 없는 현재 메모리 항목(방금 추가된 것)은 유지
+    const serverIds = new Set(sessions.map(s => s.session_id));
+    const memoryOnly = conversationHistories.filter(h => h.session_id && !serverIds.has(h.session_id));
+    conversationHistories = [
+      ...memoryOnly,
+      ...sessions.map(s => ({
+        id: s.session_id,
+        session_id: s.session_id,
+        keyword: s.preview ? s.preview.substring(0,12) : (s.category || s.mode),
+        emoji: getEmoji(s.preview || s.category || ''),
+        mode: s.mode,
+        preview: s.preview || '',
+        time: s.updated_at ? s.updated_at.substring(5,16).replace('T',' ') : '',
+        category: s.category,
+      }))
+    ];
+    renderHistoryList();
+  } catch(e) {
+    renderHistoryList();
+  }
+}
+
+function renderHistoryList() {
+  const list = document.getElementById('chat-history-list');
+  if (!list) return;
+  const clearBtn = document.getElementById('clear-all-history-btn');
+  if (conversationHistories.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--ghost);font-size:12px;">No conversation history yet</div>';
+    if (clearBtn) clearBtn.style.display = 'none';
+    return;
+  }
+  if (clearBtn) clearBtn.style.display = 'block';
+  list.innerHTML = conversationHistories.slice(0,20).map((h, idx) => `
+    <div class="list-item" style="cursor:pointer;display:flex;align-items:center;gap:10px;"
+         onclick="loadChatHistory('${h.session_id || h.id}')">
+      <div class="list-thumb">${h.emoji}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="list-title" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${h.keyword}</div>
+        <div class="list-sub">${h.mode==='info'?'Info Mode':'Conversation'}${h.category?' · '+h.category:''} · ${h.time}</div>
+      </div>
+      <button onclick="event.stopPropagation();deleteHistoryItem(${idx})"
+        style="flex-shrink:0;background:none;border:none;font-size:15px;color:var(--ghost);cursor:pointer;padding:4px 6px;border-radius:6px;"
+        title="Delete">🗑️</button>
+    </div>
+  `).join('');
+}
+
+function deleteHistoryItem(idx) {
+  conversationHistories.splice(idx, 1);
+  renderHistoryList();
+}
+
+function clearAllHistory() {
+  if (!confirm('Delete all chat history?')) return;
+  conversationHistories = [];
+  chatHistory = [];
+  infoHistory = [];
+  _newChatSession();
+  _newInfoSession();
+  localStorage.setItem('aak_history_cleared_at', Date.now().toString());
+  localStorage.removeItem('aak_history_cleared');
+  renderHistoryList();
+  showToast('Chat history cleared');
+}
+
+// ── AI 채팅 ──
+// SERVER_URL은 스크립트 상단에서 localStorage로 초기화됨
+let chatHistory = [];
+let infoHistory = [];
+let chatFirstMsg = true;
+let infoFirstMsg = true;
+
+// 타이핑 애니메이션: el에 text를 한 글자씩 출력
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function renderText(raw) {
+  return raw.split('\n').map(line => {
+    const trimmed = line.trim();
+    if (trimmed === '') {
+      return '<div style="height:8px;"></div>';
+    } else if (trimmed.startsWith('Eng.)')) {
+      return '<div style="color:var(--muted);margin-bottom:2px;">' + escapeHtml(trimmed) + '</div>';
+    } else if (trimmed.startsWith('Kor.)')) {
+      return '<div style="font-weight:700;color:var(--ink);word-break:keep-all;margin-top:4px;">' + escapeHtml(trimmed) + '</div>';
+    } else if (trimmed.startsWith('Pron.)')) {
+      return '<div style="color:var(--blue);font-style:italic;">' + escapeHtml(trimmed) + '</div>';
+    } else if (trimmed.startsWith('📌')) {
+      // 정보제공 요약 줄 — 굵게 + 구분선
+      return '<div style="font-weight:700;font-size:13px;color:var(--ink);padding-bottom:6px;margin-bottom:4px;border-bottom:1px solid var(--border);">' + escapeHtml(trimmed) + '</div>';
+    } else if (/^[\u{1F300}-\u{1FAFF}]/u.test(trimmed)) {
+      // 이모지로 시작하는 섹션 줄
+      return '<div style="margin-top:2px;line-height:1.7;color:var(--ink);">' + escapeHtml(trimmed) + '</div>';
+    }
+    return '<div style="line-height:1.7;">' + escapeHtml(trimmed) + '</div>';
+  }).join('');
+}
+function typeText(el, text, scrollBox) {
+  return new Promise(resolve => {
+    el.innerHTML = '';
+    let i = 0;
+    let raw = '';
+    const speed = Math.max(10, Math.min(30, 1500 / text.length));
+    const timer = setInterval(() => {
+      raw += text[i];
+      i++;
+      el.innerHTML = renderText(raw);
+      if (scrollBox) scrollBox.scrollTop = scrollBox.scrollHeight;
+      if (i >= text.length) {
+        clearInterval(timer);
+        resolve();
+      }
+    }, speed);
+  });
+}
+
+async function sendChatMessage() {
+  const input = document.getElementById('chat-text-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const box = document.getElementById('chat-messages-box');
+
+  const userBubble = document.createElement('div');
+  userBubble.className = 'bubble user';
+  userBubble.textContent = text;
+  box.appendChild(userBubble);
+  input.value = '';
+  box.scrollTop = box.scrollHeight;
+
+  const loadingBubble = document.createElement('div');
+  loadingBubble.className = 'bubble bot';
+  loadingBubble.innerHTML = '<span style="opacity:0.5">Typing...</span>';
+  box.appendChild(loadingBubble);
+  box.scrollTop = box.scrollHeight;
+
+  chatHistory.push({role:'user', content:text});
+
+  try {
+    if (!SERVER_URL) throw new Error('서버 미설정');
+
+    const res = await fetch(SERVER_URL + '/chat', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},
+      body: JSON.stringify({
+        messages: chatHistory,
+        mode: 'conversation',
+        category: selectedCategory,  // 선택한 카테고리 전송 (null이면 서버에서 자동 감지)
+        session_id: currentChatSessionId  // 세션 연속성
+      })
+    });
+
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    const data = await res.json();
+    const reply = data.reply || '잠시 후 다시 시도해주세요.';
+
+    // 타이핑 애니메이션
+    await typeText(loadingBubble, reply, box);
+
+    chatHistory.push({role:'assistant', content: reply});
+    // 서버에서 반환된 세션 ID 저장
+    if (data.session_id) {
+      currentChatSessionId = data.session_id;
+      localStorage.setItem('aak_chat_session', currentChatSessionId);
+    }
+    saveToHistory(extractKeyword(text), 'conversation', reply);
+    if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+
+  } catch(e) {
+    if (!SERVER_URL) {
+      loadingBubble.innerHTML = 'Server address not set. <span style="color:var(--red);cursor:pointer;text-decoration:underline;" onclick="showUrlConfig()">Configure now</span>';
+    } else {
+      loadingBubble.textContent = 'A connection error occurred. Please check the server.';
+    }
+  }
+  box.scrollTop = box.scrollHeight;
+}
+async function sendInfoMessage() {
+  const input = document.getElementById('info-text-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const box = document.getElementById('info-messages-box');
+
+  const userBubble = document.createElement('div');
+  userBubble.className = 'bubble user';
+  userBubble.textContent = text;
+  box.appendChild(userBubble);
+  input.value = '';
+  box.scrollTop = box.scrollHeight;
+
+  const loadingBubble = document.createElement('div');
+  loadingBubble.className = 'bubble bot';
+  loadingBubble.innerHTML = '<span style="opacity:0.5">Searching...</span>';
+  box.appendChild(loadingBubble);
+  box.scrollTop = box.scrollHeight;
+
+  infoHistory.push({role:'user', content:text});
+
+  try {
+    if (!SERVER_URL) throw new Error('서버 미설정');
+
+    const res = await fetch(SERVER_URL + '/chat', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},
+      body: JSON.stringify({messages: infoHistory, mode: 'info', session_id: currentInfoSessionId})
+    });
+
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    const data = await res.json();
+    const reply = data.reply || '잠시 후 다시 시도해주세요.';
+
+    // 타이핑 애니메이션
+    await typeText(loadingBubble, reply, box);
+
+    infoHistory.push({role:'assistant', content: reply});
+    if (data.session_id) {
+      currentInfoSessionId = data.session_id;
+      localStorage.setItem('aak_info_session', currentInfoSessionId);
+    }
+    saveToHistory(extractKeyword(text), 'info', reply);
+    if (infoHistory.length > 20) infoHistory = infoHistory.slice(-20);
+
+  } catch(e) {
+    if (!SERVER_URL) {
+      loadingBubble.innerHTML = 'Server address not set. <span style="color:var(--red);cursor:pointer;text-decoration:underline;" onclick="showUrlConfig()">Configure now</span>';
+    } else {
+      loadingBubble.textContent = 'A connection error occurred. Please check the server.';
+    }
+  }
+  box.scrollTop = box.scrollHeight;
+}
+
+function switchChatMode(mode) {
+  const convPanel = document.getElementById('chat-conversation-panel');
+  const infoPanel = document.getElementById('chat-info-panel');
+  const toggle = document.getElementById('chat-mode-toggle');
+  const label = document.getElementById('label-mode');
+  if (mode === 'conversation') {
+    convPanel.style.display = 'block';
+    infoPanel.style.display = 'none';
+    if (toggle) toggle.checked = true;
+    if (label) { label.textContent = 'Conv.'; label.style.color = 'var(--green)'; }
+    chatFirstMsg = chatHistory.length === 0;
+  } else {
+    convPanel.style.display = 'none';
+    infoPanel.style.display = 'block';
+    if (toggle) toggle.checked = false;
+    if (label) { label.textContent = 'Info'; label.style.color = 'var(--ghost)'; }
+    infoFirstMsg = infoHistory.length === 0;
+  }
+}
+
+function loadScenario(type) {
+  const scenarios = {
+    cafe:'☕ Starting Cafe Order scenario! Try saying "I\'d like an iced Americano."',
+    subway:'🚇 Subway navigation scenario! Try saying "How do I get to Gyeongbokgung Station?"',
+    hotel:'🏨 Hotel check-in scenario! Try saying "Hello, I have a reservation under Son Injun."',
+  };
+  const categoryMap = {
+    cafe:   { category: '식당',    icon: '☕', label: '카페' },
+    subway: { category: '대중교통', icon: '🚇', label: '지하철·버스' },
+    hotel:  { category: '호텔',    icon: '🏨', label: '호텔' },
+  };
+
+  chatHistory = [];
+  chatFirstMsg = true;
+  _newChatSession();  // 새 시나리오 = 새 세션
+
+  // 카테고리 자동 설정
+  const cat = categoryMap[type];
+  if (cat) {
+    selectedCategory      = cat.category;
+    selectedCategoryIcon  = cat.icon;
+    selectedCategoryLabel = cat.label;
+    document.getElementById('cat-badge-icon').textContent  = cat.icon;
+    document.getElementById('cat-badge-label').textContent = cat.label;
+  }
+
+  const box = document.getElementById('chat-messages-box');
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble bot';
+  bubble.textContent = scenarios[type];
+  box.appendChild(bubble);
+  box.scrollTop = box.scrollHeight;
+  chatHistory.push({role:'assistant', content:scenarios[type]});
+  showToast(`${cat.icon} ${cat.label} scenario started`);
+}
+
+function loadInfoQuestion(type) {
+  const q = {
+    bibimbap:'비빔밥이란 무엇인가요?',
+    hanbok:'한복 입는 법을 알려주세요',
+    soju:'소주 문화에 대해 설명해주세요'
+  };
+  document.getElementById('info-text-input').value = q[type];
+  sendInfoMessage();
+}
+
+async function loadChatHistory(sessionId) {
+  if (!SERVER_URL || !sessionId) { showToast('Server not configured or no session'); return; }
+  try {
+    const res = await fetch(SERVER_URL + '/history/sessions/' + sessionId, {
+      headers: {'ngrok-skip-browser-warning':'true'}
+    });
+    if (!res.ok) throw new Error('not found');
+    const data = await res.json();
+    const msgs = data.messages || [];
+    if (msgs.length === 0) { showToast('No messages in this conversation'); return; }
+
+    // 대화 탭으로 이동 후 복원
+    switchChatMode('conversation');
+    const box = document.getElementById('chat-messages-box');
+
+    // 구분선
+    const sep = document.createElement('div');
+    sep.style.cssText = 'text-align:center;font-size:10px;color:var(--ghost);margin:8px 0;';
+    sep.textContent = '── Previous conversation loaded ──';
+    box.appendChild(sep);
+
+    // 메시지 렌더링
+    chatHistory = [];
+    msgs.forEach(m => {
+      const b = document.createElement('div');
+      b.className = 'bubble ' + (m.role === 'user' ? 'user' : 'bot');
+      if (m.role === 'assistant') {
+        b.innerHTML = renderText(m.content);
+      } else {
+        b.textContent = m.content;
+      }
+      box.appendChild(b);
+      chatHistory.push({role: m.role, content: m.content});
+    });
+
+    // 세션 이어받기
+    currentChatSessionId = sessionId;
+    localStorage.setItem('aak_chat_session', sessionId);
+    if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+    box.scrollTop = box.scrollHeight;
+
+    showToast('💬 Conversation loaded');
+  } catch(e) {
+    showToast('Could not load history');
+  }
+}
+
+// ── 카테고리 선택 바텀시트 ──
+let selectedCategory = null;      // 서버 전송용 (식당, 호텔 등)
+let selectedCategoryIcon = '🎯';  // 뱃지 표시용 아이콘
+let selectedCategoryLabel = '상황 선택'; // 뱃지 표시용 라벨
+let tempCat = null; // 임시 선택 (확인 전)
+
+function openCatSheet() {
+  document.getElementById('cat-sheet-overlay').classList.add('open');
+  // 현재 선택 상태 반영
+  document.querySelectorAll('.cat-sheet-btn').forEach(b => b.classList.remove('selected'));
+  if (selectedCategory) {
+    const active = document.querySelector(`.cat-sheet-btn.selected`);
+    if (active) active.classList.add('selected');
+  }
+  tempCat = null;
+}
+
+function closeCatSheet() {
+  document.getElementById('cat-sheet-overlay').classList.remove('open');
+  tempCat = null;
+}
+
+function selectCat(category, icon, label) {
+  // 임시 선택 저장
+  tempCat = { category, icon, label };
+  // UI 선택 표시
+  document.querySelectorAll('.cat-sheet-btn').forEach(b => b.classList.remove('selected'));
+  const key = category === '식당' && label === '카페' ? '카페' : category;
+  const btn = document.getElementById(`csb-${key}`);
+  if (btn) btn.classList.add('selected');
+}
+
+function confirmCatSheet() {
+  if (!tempCat) { closeCatSheet(); return; }
+  selectedCategory = tempCat.category;
+  selectedCategoryIcon = tempCat.icon;
+  selectedCategoryLabel = tempCat.label;
+  // 뱃지 업데이트
+  document.getElementById('cat-badge-icon').textContent = selectedCategoryIcon;
+  document.getElementById('cat-badge-label').textContent = selectedCategoryLabel;
+  closeCatSheet();
+  showToast(`${selectedCategoryIcon} ${selectedCategoryLabel} situation selected`);
+}
+
+
+// 말동무 탭 초기 상태: 대화모드 ON
+(function() {
+  const toggle = document.getElementById('chat-mode-toggle');
+  if (toggle) toggle.checked = true;
+})();
+</script>
+
+
+<script>
+// ── 혼잡도 레벨 한→영 변환 ──
+function levelToEn(level) {
+  const map = {
+    '여유':'Comfortable','보통':'Moderate','약간 붐빔':'Slightly Busy',
+    '붐빔':'Busy','혼잡':'Crowded','매우혼잡':'Very Crowded','정보없음':'N/A'
+  };
+  return map[level] || level;
+}
+
+// ── 지하철역명 한→영 변환 ──
+function stationToEn(name) {
+  if (!name) return name;
+  const map = {
+    '1호선':'Line 1','2호선':'Line 2','3호선':'Line 3','4호선':'Line 4',
+    '5호선':'Line 5','6호선':'Line 6','7호선':'Line 7','8호선':'Line 8','9호선':'Line 9',
+    '경의중앙선':'Gyeongui-Jungang Line','수인분당선':'Suin-Bundang Line',
+    '신분당선':'Shinbundang Line','공항철도':'AREX','GTX-A':'GTX-A',
+    '서울역':'Seoul Station','강남역':'Gangnam Station','홍대입구역':'Hongik Univ. Station',
+    '신촌역':'Sinchon Station','명동역':'Myeongdong Station','종로3가역':'Jongno 3-ga Station',
+    '동대문역사문화공원역':'DDP Station','경복궁역':'Gyeongbokgung Station',
+    '시청역':'City Hall Station','광화문역':'Gwanghwamun Station',
+    '사당역':'Sadang Station','신림역':'Sillim Station','구로디지털단지역':'Guro Digital Complex Station',
+    '잠실역':'Jamsil Station','건대입구역':'Konkuk Univ. Station','성수역':'Seongsu Station',
+    '왕십리역':'Wangsimni Station','회기역':'Hoegi Station','청량리역':'Cheongnyangni Station',
+    '노원역':'Nowon Station','도봉산역':'Dobongsan Station','수락산역':'Suraksan Station',
+    '이수역':'Isu Station','총신대입구역':'Chongshin Univ. Station','동작역':'Dongjak Station',
+    '혜화역':'Hyehwa Station','안국역':'Anguk Station','경복궁':'Gyeongbokgung',
+    '서울':'Seoul','강남':'Gangnam','홍대':'Hongik Univ.','명동':'Myeongdong',
+  };
+  let result = name;
+  for (const [ko, en] of Object.entries(map)) {
+    result = result.replace(ko, en);
+  }
+  return result;
+}
+
+// ── 장소명 한→영 변환 ──
+function placeToEn(name) {
+  if (!name) return name;
+  const map = {
+    '경복궁':'Gyeongbokgung Palace','창덕궁':'Changdeokgung Palace',
+    '창경궁':'Changgyeonggung Palace','덕수궁':'Deoksugung Palace',
+    '경희궁':'Gyeonghuigung Palace','종묘':'Jongmyo Shrine',
+    '명동거리':'Myeongdong Street','명동':'Myeongdong',
+    '북촌한옥마을':'Bukchon Hanok Village','북촌':'Bukchon',
+    '인사동':'Insadong','홍대':'Hongdae','강남':'Gangnam',
+    '이태원':'Itaewon','잠실':'Jamsil','성수':'Seongsu',
+    '한강공원':'Hangang Park','한강':'Hangang River',
+    '남산타워':'Namsan Tower','N서울타워':'N Seoul Tower',
+    '동대문디자인플라자':'DDP','동대문':'Dongdaemun',
+    '광화문광장':'Gwanghwamun Square','광화문':'Gwanghwamun',
+    '코엑스':'COEX','롯데월드':'Lotte World',
+  };
+  let result = name;
+  for (const [ko, en] of Object.entries(map)) {
+    if (result.includes(ko)) { result = result.replace(ko, en); break; }
+  }
+  return result;
+}
+
+// ── 버스 도착 메시지 한→영 변환 ──
+function busMsgToEn(msg) {
+  if (!msg) return msg;
+  return msg
+    .replace(/(\d+)분 후 도착/g, 'arriving in $1 min')
+    .replace(/(\d+)분후/g, 'in $1 min')
+    .replace(/곧 도착/g, 'arriving soon')
+    .replace(/운행종료/g, 'Service ended')
+    .replace(/운행 종료/g, 'Service ended')
+    .replace(/막차 운행중/g, 'Last bus running')
+    .replace(/첫차 준비중/g, 'Preparing first bus')
+    .replace(/정보없음/g, 'No info')
+    .replace(/정보 없음/g, 'No info')
+    .replace(/(\d+)번째 전/g, '$1 stop(s) away')
+    .replace(/전 정류장/g, 'stop(s) away')
+    .replace(/번 정류장/g, ' stop(s) away')
+    .replace(/출발/g, 'departed')
+    .replace(/도착/g, 'arriving');
+}
+
+// ── 식당명 한→영 음역/번역 (부분 처리) ──
+function restaurantToEn(name) {
+  if (!name) return name;
+  // 완전 일치
+  const exact = {
+    '진짜옥냉면':'Jinjja-ok Naengmyeon','삼청동수제비':'Samcheong-dong Sujebi',
+    '광화문국밥':'Gwanghwamun Gukbap','북촌손만두':'Bukchon Son-mandu',
+    '을지면옥':'Euljimyeonok','평양냉면':'Pyongyang Naengmyeon',
+    '명동교자':'Myeongdong Gyoja','신라호텔':'Shilla Hotel',
+    '롯데호텔':'Lotte Hotel','조선호텔':'Joseon Hotel',
+  };
+  if (exact[name]) return exact[name];
+  // 음식 종류 단어 치환
+  const foodPart = {
+    '냉면':'Naengmyeon','국밥':'Gukbap','수제비':'Sujebi','만두':'Mandu',
+    '삼겹살':'Samgyeopsal','갈비':'Galbi','불고기':'Bulgogi','순대':'Sundae',
+    '떡볶이':'Tteokbokki','김밥':'Gimbap','치킨':'Chicken','피자':'Pizza',
+    '라멘':'Ramen','우동':'Udon','덮밥':'Rice Bowl','찌개':'Jjigae',
+    '탕':'Tang','칼국수':'Kalguksu','순두부':'Sundubu','설렁탕':'Seolleongtang',
+    '갈국수':'Galguksu','해장국':'Haejangguk','비빔밥':'Bibimbap',
+    '보쌈':'Bossam','족발':'Jokbal','삼계탕':'Samgyetang',
+    '소고기':'Beef','돼지고기':'Pork','닭갈비':'Dak-galbi',
+    '초밥':'Sushi','회':'Hoetjip','횟집':'Hoetjip',
+    '스테이크':'Steak','파스타':'Pasta','햄버거':'Burger',
+    '빵집':'Bakery','카페':'Cafe','커피':'Coffee',
+  };
+  // 지명/브랜드 치환
+  const locPart = {
+    '명동':'Myeongdong','강남':'Gangnam','홍대':'Hongdae','이태원':'Itaewon',
+    '인사동':'Insadong','북촌':'Bukchon','삼청동':'Samcheong-dong',
+    '광화문':'Gwanghwamun','종로':'Jongno','신촌':'Sinchon',
+    '잠실':'Jamsil','건대':'Konkuk','성수':'Seongsu',
+  };
+  let result = name;
+  for (const [ko, en] of Object.entries({...locPart, ...foodPart})) {
+    result = result.replace(new RegExp(ko, 'g'), en);
+  }
+  return result;
+}
+
+// ── 한국어 음식 카테고리 → 영어 변환 ──
+function categoryToEn(cat) {
+  if (!cat) return '';
+  // 카카오 API는 "음식점 > 한식 > 냉면" 형태로 오거나 이미 split된 마지막 값
+  // 서버에서 split(" > ")[-1] 처리 후 오지만 혹시 전체 경로로 올 경우 대비
+  const cleaned = cat.split('>').pop().trim();
+  const map = {
+    '한식':'Korean','중식':'Chinese','일식':'Japanese','양식':'Western',
+    '분식':'Korean Snacks','치킨':'Chicken','피자':'Pizza','햄버거':'Burger',
+    '카페':'Cafe','베이커리':'Bakery','커피전문점':'Coffee Shop',
+    '디저트':'Dessert','아이스크림':'Ice Cream','제과점':'Bakery',
+    '냉면':'Cold Noodles','국밥':'Rice Soup','삼겹살':'Grilled Pork',
+    '갈비':'Ribs','불고기':'Bulgogi','돼지고기':'Pork','소고기':'Beef',
+    '해산물':'Seafood','초밥':'Sushi','라멘':'Ramen','우동':'Udon',
+    '덮밥':'Rice Bowl','찌개':'Stew','탕':'Soup','전':'Pancake',
+    '만두':'Dumplings','수제비':'Dough Soup','족발':'Pork Trotters',
+    '보쌈':'Bossam','순대':'Sundae','떡볶이':'Tteokbokki','김밥':'Gimbap',
+    '설렁탕':'Seolleongtang','칼국수':'Kalguksu','삼계탕':'Samgyetang',
+    '해장국':'Haejangguk','비빔밥':'Bibimbap','닭갈비':'Dak-galbi',
+    '편의점':'Convenience Store','마트':'Supermarket',
+    '패스트푸드':'Fast Food','푸드코트':'Food Court',
+    '태국':'Thai','인도':'Indian','멕시코':'Mexican','베트남':'Vietnamese',
+    '이탈리안':'Italian','프랑스':'French','스페인':'Spanish',
+    '주점':'Bar','술집':'Bar','포차':'Street Bar','호프':'Beer Bar',
+    '음식점':'Restaurant',
+  };
+  for (const [ko, en] of Object.entries(map)) {
+    if (cleaned.includes(ko)) return en;
+  }
+  return cleaned || cat;
+}
+
+function areaToEn(area) {
+  if (!area) return 'Nearby';
+  const map = {
+    '주변':'Nearby','명동':'Myeongdong','강남':'Gangnam','홍대':'Hongdae',
+    '인사동':'Insadong','이태원':'Itaewon','북촌':'Bukchon','경복궁':'Gyeongbokgung',
+    '신촌':'Sinchon','건대':'Konkuk','성수':'Seongsu','잠실':'Jamsil',
+  };
+  for (const [ko, en] of Object.entries(map)) {
+    if (area.includes(ko)) return area.replace(ko, en);
+  }
+  return area;
+}
+
+// SK API는 SERVER_URL(위 스크립트 블록에서 초기화됨)을 재사용
+async function fetchSK(endpoint) {
+  if (!SERVER_URL) return null;
+  try {
+    const res = await fetch(SERVER_URL + endpoint, {
+      headers: {'ngrok-skip-browser-warning': 'true'}
+    });
+    if (!res.ok) {
+      console.error(`[AAK] fetchSK 오류: ${endpoint} → HTTP ${res.status}`);
+      return null;
+    }
+    return await res.json();
+  } catch(e) {
+    console.error('[AAK] fetchSK 네트워크 오류:', endpoint, e.message);
+    return null;
+  }
+}
+
+async function showAakDetail(type) {
+  const overlay = document.getElementById('aak-detail-overlay');
+  const title   = document.getElementById('aak-detail-title');
+  const apiBadge = document.getElementById('aak-detail-api');
+  const body    = document.getElementById('aak-detail-body');
+  if (!overlay) return;
+
+  // API 배지 초기화
+  if (apiBadge) apiBadge.textContent = '';
+
+  overlay.style.display = 'flex';
+  body.innerHTML = `<div style="text-align:center;padding:40px;">
+    <div style="font-size:32px;margin-bottom:12px;">⏳</div>
+    <div style="color:var(--muted);font-size:13px;">Loading real-time data...</div>
+  </div>`;
+
+  const API_LABELS = {
+    'transit':           'SK T-Map Bus API',
+    'subway-congestion': 'Seoul Open Data API',
+    'place-congestion':  'Seoul Open Data API',
+    'restaurant':        'Kakao Map API',
+    'travel':            'SK Open API',
+  };
+  if (apiBadge && API_LABELS[type]) apiBadge.textContent = API_LABELS[type];
+
+  if (type === 'subway-congestion') {
+    title.textContent = '🚇 Subway Congestion';
+    const data = await fetchSK('/subway-congestion');
+    if (data && data.stations && data.stations.length) {
+      const sourceCount = data.stations.reduce((acc, s) => { acc[s.source||'unavailable']=(acc[s.source||'unavailable']||0)+1; return acc; }, {});
+      const dominantSrc = Object.entries(sourceCount).sort((a,b)=>b[1]-a[1])[0]?.[0];
+      const srcLabel = dominantSrc==='real' ? '🟢 Live' : dominantSrc==='estimated' ? '🟡 Estimated' : '⚪ Sample';
+      if (apiBadge) apiBadge.textContent = `Seoul Open API · ${srcLabel}`;
+      body.innerHTML = '<div style="display:flex;flex-direction:column;gap:10px;">' +
+        data.stations.map(s => {
+          const p = Math.min(s.congestion > 0 ? s.congestion : 40, 100);
+          const color = s.level==='혼잡'||s.level==='매우혼잡' ? '#c0392b' : s.level==='보통'||s.level==='약간 붐빔' ? '#c8960c' : s.level==='여유' ? '#2e6b3e' : 'var(--ghost)';
+          const nextHtml = s.next ? `<div style="font-size:10px;color:var(--muted);margin-top:5px;">🚇 ${stationToEn(s.next)}</div>` : '';
+          const srcDot = s.source==='real' ? '<span style="color:#2e6b3e;font-size:9px;"> ●Live</span>' : s.source==='estimated' ? '<span style="color:#c8960c;font-size:9px;"> ●Est.</span>' : '';
+          return `<div style="background:var(--surface-2);border-radius:12px;padding:14px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;align-items:center;">
+              <span style="font-size:13px;font-weight:700;">${stationToEn(s.name)}${srcDot}</span>
+              <span style="font-size:11px;font-weight:700;color:${color};">${levelToEn(s.level)}</span>
+            </div>
+            <div style="height:7px;background:var(--border);border-radius:4px;">
+              <div style="height:100%;width:${p}%;background:${color};border-radius:4px;transition:width 0.6s;"></div>
+            </div>
+            ${nextHtml}
+          </div>`;
+        }).join('') + '</div>';
+    } else {
+      body.innerHTML = subwayFallback();
+    }
+
+  } else if (type === 'place-congestion') {
+    title.textContent = '📍 Place Congestion';
+    const data = await fetchSK('/place-congestion');
+    if (data && data.places && data.places.length) {
+      const allReal = data.places.every(p => p.source === 'real');
+      if (apiBadge) apiBadge.textContent = `Seoul Open API · ${allReal ? '🟢 Live' : '⚪ Some data unavailable'}`;
+      body.innerHTML = '<div style="display:flex;flex-direction:column;gap:10px;">' +
+        data.places.map(p => {
+          const isUnavail = p.source === 'unavailable';
+          const color = p.level==='붐빔'||p.level==='혼잡'||p.level==='매우혼잡' ? '#c0392b'
+                      : p.level==='약간 붐빔'||p.level==='보통' ? '#c8960c'
+                      : p.level==='여유' ? '#2e6b3e' : 'var(--ghost)';
+          const msgHtml = p.message ? `<div style="font-size:10px;color:var(--muted);margin-top:5px;">${busMsgToEn(p.message)}</div>` : '';
+          const srcDot = p.source==='real' ? '<span style="color:#2e6b3e;font-size:9px;"> ●Live</span>' : '';
+          return `<div style="background:var(--surface-2);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;">
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;margin-bottom:6px;">${placeToEn(p.name)}${srcDot}</div>
+              ${isUnavail ? '<div style="font-size:11px;color:var(--ghost);">No data</div>' :
+                `<div style="height:7px;background:var(--border);border-radius:4px;">
+                  <div style="height:100%;width:${p.percent}%;background:${color};border-radius:4px;"></div>
+                </div>`}
+              ${msgHtml}
+            </div>
+            ${isUnavail ? '' : `<span style="font-size:11px;font-weight:700;color:${color};min-width:80px;text-align:right;">${levelToEn(p.level)}</span>`}
+          </div>`;
+        }).join('') + '</div>';
+    } else {
+      body.innerHTML = placeFallback();
+    }
+
+  } else if (type === 'transit') {
+    title.textContent = '🚌 Transit';
+
+    // GPS 없으면 안내만 표시
+    if (!userLat || !userLon) {
+      if (apiBadge) apiBadge.textContent = 'SK T-Map Bus API';
+      body.innerHTML = `
+        <div style="text-align:center;padding:36px 20px;">
+          <div style="font-size:40px;margin-bottom:14px;">📍</div>
+          <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;">Location permission required</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.7;">
+            We'll show nearby bus stops and<br>arrival times based on your location.<br><br>
+            <span style="color:var(--ghost);font-size:11px;">Allow location access and tap again.</span>
+          </div>
+          <div style="margin-top:20px;">
+            <button onclick="requestUserLocation(); showAakDetail('transit');"
+              style="background:var(--red);color:white;border:none;border-radius:999px;padding:11px 24px;font-size:13px;font-weight:700;cursor:pointer;">
+              📍 Allow Location Access
+            </button>
+          </div>
+        </div>`;
+      return;
+    }
+
+    if (apiBadge) apiBadge.textContent = 'SK T-Map Bus API · Based on current location';
+    const busParams = `?lat=${userLat.toFixed(6)}&lon=${userLon.toFixed(6)}&radius=400`;
+    const data = await fetchSK('/bus-stops' + busParams);
+
+    if (data && data.stops && data.stops.length) {
+      body.innerHTML = '<div style="display:flex;flex-direction:column;gap:12px;">' +
+        data.stops.map(stop => {
+          const busRows = stop.buses && stop.buses.length
+            ? stop.buses.map(b => `
+                <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border);">
+                  <div style="background:var(--red);color:white;font-size:11px;font-weight:700;
+                              padding:3px 8px;border-radius:6px;min-width:40px;text-align:center;flex-shrink:0;">${b.route}</div>
+                  <div style="flex:1;">
+                    <div style="font-size:11px;font-weight:600;color:var(--ink);">${busMsgToEn(b.msg)}</div>
+                    ${b.msg2 ? `<div style="font-size:10px;color:var(--ghost);">${busMsgToEn(b.msg2)}</div>` : ''}
+                  </div>
+                </div>`).join('')
+            : '<div style="font-size:11px;color:var(--ghost);padding-top:6px;">No arrival info</div>';
+          return `
+          <div style="background:var(--surface-2);border-radius:14px;padding:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+              <span style="font-size:13px;font-weight:700;color:var(--ink);">🚏 ${placeToEn(stop.name)}</span>
+              <span style="font-size:10px;color:var(--ghost);">${stop.distance}</span>
+            </div>
+            ${busRows}
+          </div>`;
+        }).join('') + '</div>';
+    } else {
+      body.innerHTML = `
+        <div style="text-align:center;padding:32px 20px;">
+          <div style="font-size:36px;margin-bottom:12px;">🚌</div>
+          <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;">No nearby bus stops</div>
+          <div style="font-size:11px;color:var(--muted);">No stops within 400m<br>or please check server connection.</div>
+        </div>`;
+    }
+
+  } else if (type === 'restaurant') {
+    title.textContent = '🍽️ Nearby Restaurants';
+    const restaurantParams = (userLat && userLon)
+      ? `?lat=${userLat.toFixed(6)}&lon=${userLon.toFixed(6)}&radius=1000`
+      : '';
+    if (restaurantParams) {
+      if (apiBadge) apiBadge.textContent = 'Kakao Map API · Based on current location';
+    }
+    const data = await fetchSK('/restaurants' + restaurantParams);
+    if (data && data.restaurants && data.restaurants.length) {
+      const areaLabel = areaToEn(data.area || 'Nearby');
+      body.innerHTML =
+        `<div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;">📍 ${areaLabel}</div>` +
+        '<div style="display:flex;flex-direction:column;gap:10px;">' +
+        data.restaurants.map((r, i) => {
+          const nameDisplay = r.name;
+          const catEn  = categoryToEn(r.category);
+          const dist   = r.distance || '';
+          const sub    = [catEn, dist].filter(Boolean).join(' · ');
+          return `
+        <div style="background:var(--surface-2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">${i+1}</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:var(--ink);">${nameDisplay}</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px;">${sub}</div>
+          </div>
+          ${r.url ? `<a href="${r.url}" target="_blank" style="text-decoration:none;font-size:18px;flex-shrink:0;">›</a>` : ''}
+        </div>`;
+        }).join('') + '</div>';
+    } else {
+      body.innerHTML = restaurantFallback();
+    }
+
+  } else if (type === 'travel') {
+    title.textContent = '🗺️ Domestic Travel';
+    body.innerHTML = travelFallback();
+
+  } else if (type === 'emergency') {
+    title.textContent = '🆘 Emergency Contacts';
+    body.innerHTML = emergencyFallback();
+
+  } else if (type === 'etiquette') {
+    title.textContent = '🙏 Etiquette Guide';
+    body.innerHTML = etiquetteFallback();
+  }
+}
+
+function subwayFallback() {
+  return '<div style="display:flex;flex-direction:column;gap:10px;">' +
+    [{n:'Line 2 Gangnam',p:88,l:'Crowded'},{n:'Line 2 Hongdae',p:55,l:'Moderate'},{n:'Line 3 Gyeongbokgung',p:30,l:'Comfortable'},{n:'Line 4 Myeongdong',p:72,l:'Moderate'}]
+    .map(s => `<div style="background:var(--surface-2);border-radius:12px;padding:14px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:13px;font-weight:700;">${s.n}</span>
+        <span style="font-size:11px;font-weight:700;color:${s.p>80?'#c0392b':s.p>50?'#c8960c':'#2e6b3e'};">${s.l}</span>
+      </div>
+      <div style="height:7px;background:var(--border);border-radius:4px;">
+        <div style="height:100%;width:${s.p}%;background:${s.p>80?'#c0392b':s.p>50?'#c8960c':'#2e6b3e'};border-radius:4px;"></div>
+      </div>
+    </div>`).join('') + '</div>';
+}
+
+function placeFallback() {
+  return '<div style="display:flex;flex-direction:column;gap:10px;">' +
+    [{n:'Gyeongbokgung',p:82,l:'Crowded'},{n:'Myeongdong',p:95,l:'Very Crowded'},{n:'Hongdae',p:48,l:'Moderate'},{n:'Gangnam',p:65,l:'Moderate'}]
+    .map(s => `<div style="background:var(--surface-2);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;">
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;margin-bottom:6px;">${s.n}</div>
+      <div style="height:7px;background:var(--border);border-radius:4px;">
+        <div style="height:100%;width:${s.p}%;background:${s.p>80?'#c0392b':s.p>50?'#c8960c':'#2e6b3e'};border-radius:4px;"></div>
+      </div></div>
+      <span style="font-size:11px;font-weight:700;color:${s.p>80?'#c0392b':s.p>50?'#c8960c':'#2e6b3e'};min-width:52px;text-align:right;">${s.l}</span>
+    </div>`).join('') + '</div>';
+}
+
+function transitFallback() {
+  return `<div style="display:flex;flex-direction:column;gap:12px;">
+    <div style="background:var(--surface-2);border-radius:14px;padding:14px;">
+      <div style="font-weight:700;font-size:13px;margin-bottom:8px;">🚇 Subway Status</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8;">Lines 1·2·3 operating normally<br>Line 4 delayed ~5 min</div>
+    </div>
+    <div style="background:var(--surface-2);border-radius:14px;padding:14px;">
+      <div style="font-weight:700;font-size:13px;margin-bottom:8px;">🚌 Nearby Buses</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8;">Bus 273 — arriving in 3 min<br>Bus 401 — arriving in 8 min</div>
+    </div>
+  </div>`;
+}
+
+function restaurantFallback() {
+  return '<div style="display:flex;flex-direction:column;gap:10px;">' +
+    [{n:'Jinjja-ok Naengmyeon',c:'Cold Noodles'},{n:'Samcheong-dong Sujebi',c:'Korean'},{n:'Gwanghwamun Gukbap',c:'Korean'}]
+    .map((r,i) => `<div style="background:var(--surface-2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">${i+1}</div>
+      <div><div style="font-size:13px;font-weight:700;">${r.n}</div><div style="font-size:10px;color:var(--muted);">${r.c}</div></div>
+    </div>`).join('') + '</div>';
+}
+
+
+function travelFallback() {
+  return '<div style="display:flex;flex-direction:column;gap:10px;">' +
+    [{n:'Gyeongbokgung + Bukchon Hanok Village',t:'Half day',e:'🏯'},{n:'Namsan Tower Night View',t:'Evening',e:'🗼'},{n:'Jeju Island Olle Trail',t:'Overnight',e:'🍊'},{n:'Jeonju Hanok Village',t:'Day trip',e:'🎎'}]
+    .map(t => `<div style="background:var(--surface-2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:28px;">${t.e}</span>
+      <div><div style="font-size:13px;font-weight:700;">${t.n}</div><div style="font-size:11px;color:var(--muted);">⏱ ${t.t}</div></div>
+      <span style="margin-left:auto;color:var(--ghost);">›</span>
+    </div>`).join('') + '</div>';
+}
+
+function etiquetteFallback() {
+  const categories = [
+    {
+      key: 'restaurant', icon: '🍽️', label: 'Restaurant',
+      tips: [
+        { icon: '🪑', title: 'Wait to be seated', desc: 'In Korean restaurants, wait for staff to guide you to your table. Do not seat yourself unless it is a self-service style restaurant.' },
+        { icon: '🔔', title: 'Call staff by saying "여기요" (yeogiyo)', desc: 'Wave your hand or press the table buzzer to call the server. Shouting or snapping fingers is considered rude.' },
+        { icon: '🍽️', title: 'Share dishes communally', desc: 'Korean meals are typically shared. Dishes are placed in the center and everyone eats from them together — this is normal and expected.' },
+        { icon: '🥢', title: 'Use chopsticks & spoon correctly', desc: 'Never stick chopsticks upright in rice. Do not pass food directly chopstick-to-chopstick — place it on a dish instead.' },
+        { icon: '🥃', title: 'Pour drinks for others first', desc: 'It is polite to pour drinks for the people around you before filling your own glass. Accept poured drinks with both hands.' },
+        { icon: '💳', title: 'Pay at the counter, not the table', desc: 'In most Korean restaurants, you pay at the front counter after eating, not at the table. Check the bill carefully before paying.' },
+      ]
+    },
+    {
+      key: 'cafe', icon: '☕', label: 'Cafe',
+      tips: [
+        { icon: '🚶', title: 'Order at the counter', desc: 'Most Korean cafes are counter-service. Order and pay first, then find a seat. Table service is uncommon unless noted.' },
+        { icon: '📱', title: 'Kiosks are common', desc: 'Many cafes use touch-screen kiosks for ordering. Look for a kiosk near the entrance. You can often switch the language to English.' },
+        { icon: '🕐', title: 'No strict time limits, but be mindful', desc: 'Cafes do not usually set time limits, but during peak hours it is courteous to free up your seat once you have finished.' },
+        { icon: '🔇', title: 'Keep noise level low', desc: 'Korean cafes tend to be quiet study or work spaces. Keep conversations at a moderate volume and use headphones for media.' },
+        { icon: '🗑️', title: 'Clear your own tray', desc: 'In self-service cafes, return your tray and dispose of cups and trash yourself before leaving. Separate waste into the correct bins.' },
+        { icon: '💵', title: 'Tipping is not expected', desc: 'Tipping is not a practice in Korean cafes or most Korean restaurants. Simply pay the listed price.' },
+      ]
+    },
+    {
+      key: 'hotel', icon: '🏨', label: 'Hotel',
+      tips: [
+        { icon: '🛂', title: 'Passport required at check-in', desc: 'All guests must present a valid passport at hotel check-in in Korea. Have it ready — staff are required to record your information.' },
+        { icon: '🚬', title: 'Smoking rules are strict', desc: 'Smoking is prohibited in all hotel rooms and most indoor areas. Use the designated outdoor smoking area. Fines apply for violations.' },
+        { icon: '🔑', title: 'Key card controls room power', desc: 'Most Korean hotels use a key card slot near the door to control electricity in the room. Insert it to turn on power, remove it when you leave.' },
+        { icon: '🧹', title: 'Housekeeping & Do Not Disturb', desc: 'Hang the "Do Not Disturb" sign if you don\'t want housekeeping. If you need towels or amenities, call the front desk or use the in-room tablet.' },
+        { icon: '🛁', title: 'Bathroom slippers are provided', desc: 'Hotels provide slippers for in-room use. It is customary to not wear outdoor shoes inside the room in Korea.' },
+        { icon: '📞', title: 'Front desk speaks English', desc: 'Most hotel front desks in major cities have English-speaking staff. Do not hesitate to call if you need assistance.' },
+      ]
+    },
+    {
+      key: 'transit', icon: '🚇', label: 'Subway·Bus',
+      tips: [
+        { icon: '🚪', title: 'Let passengers exit first', desc: 'Always wait for passengers to exit before boarding a subway or bus. Stand to the side of the doors to allow smooth flow.' },
+        { icon: '💺', title: 'Priority seats are reserved', desc: 'Pink or yellow seats marked with icons are for elderly, pregnant, or disabled passengers. Do not sit in them even if the car is empty.' },
+        { icon: '🔇', title: 'Keep your voice down', desc: 'Phone calls on the subway are discouraged. Many Koreans will find a quiet corner or use text messaging. Keep music in headphones.' },
+        { icon: '🍔', title: 'No eating or drinking on subway', desc: 'Eating and drinking is generally frowned upon on Seoul Metro. Stick to drinks in sealed bottles if necessary and dispose of trash properly.' },
+        { icon: '🎫', title: 'T-money card saves time', desc: 'Load a T-money card for seamless transit across buses and subway. You can buy and top up at any convenience store.' },
+        { icon: '🚶', title: 'Walk on the right, pass on the left', desc: 'On escalators, stand on the right side and leave the left side for people in a hurry. This is the standard convention in Korean transit.' },
+      ]
+    },
+    {
+      key: 'airport', icon: '✈️', label: 'Airport',
+      tips: [
+        { icon: '⏱️', title: 'Arrive early', desc: 'Incheon and Gimpo airports can be very busy. Arrive at least 2–3 hours before international flights and 1.5 hours before domestic.' },
+        { icon: '🛒', title: 'Free luggage carts available', desc: 'Luggage carts are free of charge at Korean airports. Return them to designated areas after use — do not leave them blocking walkways.' },
+        { icon: '🛃', title: 'Declare items over the limit', desc: 'Duty-free allowance is USD 800. Always declare goods over the limit at customs. Undeclared items may result in fines or confiscation.' },
+        { icon: '📵', title: 'Follow security rules strictly', desc: 'Remove laptops, liquids (100ml max per container, in a clear bag), and jackets at security. Comply promptly — lines move fast in Korea.' },
+        { icon: '🍜', title: 'Food in the terminal is good', desc: 'Incheon Airport has excellent dining options before and after security. Korean food courts offer affordable, authentic meals.' },
+        { icon: '🌐', title: 'Wi-Fi & SIM available at arrival', desc: 'Free airport Wi-Fi is available throughout Korean airports. SIM cards and pocket Wi-Fi rental can be picked up at arrival hall counters.' },
+      ]
+    },
+    {
+      key: 'tourist', icon: '🏯', label: 'Tourist Site',
+      tips: [
+        { icon: '👘', title: 'Dress codes at palaces & temples', desc: 'Temples and traditional sites may require modest dress. Shoulders and knees covered. Hanbok rental at palaces grants free entry.' },
+        { icon: '📸', title: 'Ask before photographing people', desc: 'Always get permission before photographing monks, staff in traditional dress, or locals. Photography may be restricted inside temple halls.' },
+        { icon: '🤫', title: 'Quiet behavior at temples', desc: 'Buddhist temples are active places of worship. Keep voices low, do not touch ritual objects, and bow slightly when entering shrine halls.' },
+        { icon: '🚯', title: 'Do not litter', desc: 'Korea has strict anti-littering rules. Public trash cans can be scarce — carry a bag for your waste and dispose of it at a convenience store.' },
+        { icon: '🥿', title: 'Remove shoes when required', desc: 'At some traditional venues and hanok buildings, you will be asked to remove shoes before entering. Look for signs or rows of shoes at the entrance.' },
+        { icon: '🎟️', title: 'Book tickets in advance', desc: 'Popular sites like Gyeongbokgung and Bukchon can be crowded on weekends. Reserve tickets online in advance when possible.' },
+      ]
+    },
+    {
+      key: 'shopping', icon: '🛍️', label: 'Shopping',
+      tips: [
+        { icon: '🏷️', title: 'Prices are fixed in most stores', desc: 'Bargaining is not typical in Korean retail stores or malls. Prices are fixed. Outdoor markets like Namdaemun may allow some negotiation.' },
+        { icon: '💰', title: 'Tax refund for tourists', desc: 'Tourists can claim VAT refund (10%) at designated stores. Look for "Tax Refund" stickers. Minimum purchase per receipt usually applies.' },
+        { icon: '🛍️', title: 'Plastic bag fee applies', desc: 'Single-use plastic bags are charged at most shops. Bring your own reusable bag or purchase one at the counter for a small fee.' },
+        { icon: '🙇', title: 'Staff greet you loudly', desc: 'Expect enthusiastic "어서오세요!" (welcome) from staff when entering. A simple smile or nod is a polite acknowledgment.' },
+        { icon: '🔄', title: 'Keep receipts for returns', desc: 'Receipts are required for returns or exchanges. Most stores accept returns within 7–14 days with the original packaging intact.' },
+        { icon: '💳', title: 'Cards accepted almost everywhere', desc: 'Credit and debit cards are widely accepted in Korea, even at small shops. Cash is rarely necessary but useful at traditional markets.' },
+      ]
+    },
+    {
+      key: 'hospital', icon: '🏥', label: 'Hospital',
+      tips: [
+        { icon: '🪪', title: 'Bring passport & insurance info', desc: 'Korean hospitals require ID (passport for foreigners). Bring your travel insurance policy number — billing can be done directly to your insurer.' },
+        { icon: '🏥', title: 'Choose the right type of facility', desc: '의원 (clinic) for minor issues, 병원 (hospital) for moderate, 대학병원 (university hospital) for serious cases. Clinics are faster and cheaper.' },
+        { icon: '💊', title: 'Prescription required for most medicine', desc: 'Many medications require a doctor\'s prescription. Visit a clinic first, then pick up medicine at the attached or nearby pharmacy (약국).' },
+        { icon: '🌐', title: 'International clinics available', desc: 'Major hospitals in Seoul have international clinics with English-speaking staff. Call ahead to confirm availability and wait times.' },
+        { icon: '📋', title: 'Arrive early and be patient', desc: 'Korean hospitals operate on a first-come, first-served system. Arrive early, take a number, and expect to wait. Bring something to read.' },
+        { icon: '💳', title: 'Pay at discharge', desc: 'Payment is made at the billing counter before leaving. Keep all receipts for insurance claims. Credit cards are widely accepted.' },
+      ]
+    },
+    {
+      key: 'navigation', icon: '🗺️', label: 'Navigation',
+      tips: [
+        { icon: '🗺️', title: 'Naver Map is most accurate', desc: 'For navigation in Korea, Naver Map or KakaoMap are more accurate than Google Maps, especially for public transit routes and real-time info.' },
+        { icon: '🙋', title: 'Locals are generally helpful', desc: 'If you are lost, do not hesitate to ask locals. Many Koreans will try their best to help, even with limited English. Showing a map image helps.' },
+        { icon: '🔢', title: 'Korean addresses use lot-based system', desc: 'Korean addresses list city → district → neighborhood → building number. "길" means street (gil) and "대로" means boulevard (daero).' },
+        { icon: '🏪', title: 'Convenience stores as landmarks', desc: 'CU, GS25, and 7-Eleven stores are everywhere. Use them as meeting points or ask staff for directions — they are usually helpful.' },
+        { icon: '📌', title: 'Share your location instead of explaining', desc: 'When taking a taxi, sharing your destination via KakaoTaxi or showing the address in Korean on your phone is more reliable than verbal directions.' },
+        { icon: '🚶', title: 'Many areas are best explored on foot', desc: 'Neighborhoods like Hongdae, Insadong, and Bukchon are pedestrian-friendly. Walking reveals hidden alleys and spots not visible from the road.' },
+      ]
+    },
+  ];
+
+  let activeCat = 0;
+
+  function renderEtiquette(idx) {
+    const cat = categories[idx];
+    return cat.tips.map(tip => `
+      <div style="background:var(--surface-2);border-radius:14px;padding:14px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:24px;flex-shrink:0;line-height:1;">${tip.icon}</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;">${tip.title}</div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.6;">${tip.desc}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  const tabBar = '<div id="etq-tabbar" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">' +
+    categories.map((c, i) => `
+      <button id="etq-tab-${i}" onclick="switchEtqTab(${i})"
+        style="display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:20px;border:1.5px solid ${i===0?'var(--red)':'var(--border)'};background:${i===0?'var(--red)':'var(--surface-2)'};color:${i===0?'white':'var(--muted)'};font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;">
+        <span>${c.icon}</span><span>${c.label}</span>
+      </button>`).join('') +
+  '</div>';
+
+  const tipArea = `<div id="etq-tips" style="display:flex;flex-direction:column;gap:10px;">${renderEtiquette(0)}</div>`;
+
+  setTimeout(() => {
+    window._etqCategories = categories;
+    window._renderEtiquette = renderEtiquette;
+  }, 0);
+
+  return tabBar + tipArea;
+}
+
+function switchEtqTab(idx) {
+  const categories = window._etqCategories;
+  const renderEtiquette = window._renderEtiquette;
+  if (!categories || !renderEtiquette) return;
+  categories.forEach((_, i) => {
+    const btn = document.getElementById('etq-tab-' + i);
+    if (!btn) return;
+    if (i === idx) {
+      btn.style.border = '1.5px solid var(--red)';
+      btn.style.background = 'var(--red)';
+      btn.style.color = 'white';
+    } else {
+      btn.style.border = '1.5px solid var(--border)';
+      btn.style.background = 'var(--surface-2)';
+      btn.style.color = 'var(--muted)';
+    }
+  });
+  const area = document.getElementById('etq-tips');
+  if (area) area.innerHTML = renderEtiquette(idx);
+}
+
+
+function emergencyFallback() {
+  const contacts = [
+    { emoji: '🚒', name: 'Fire Department / Ambulance', number: '119', desc: 'Fire report, emergency rescue & ambulance (24hrs)' },
+    { emoji: '🚔', name: 'Police', number: '112', desc: 'Crime report, emergency dispatch (24hrs)' },
+    { emoji: '🏥', name: 'Emergency Medical Info Center', number: '1339', desc: 'Emergency medical consultation & hospital referral (24hrs)' },
+    { emoji: '🌐', name: 'Foreigner Information Center', number: '1345', desc: 'Comprehensive administrative guide for foreigners (24hrs)' },
+    { emoji: '🛟', name: 'Travel Insurance Emergency', number: '1566-8000', desc: 'Domestic & overseas travel insurance emergency assistance' },
+    { emoji: '🚨', name: 'Korea Coast Guard', number: '122', desc: 'Maritime accident report & water rescue' },
+    { emoji: '⚡', name: 'Korea Electrical Safety Corp', number: '123', desc: 'Electrical accident, leakage & power outage report' },
+    { emoji: '🔫', name: 'Gas Accident Report', number: '1544-4500', desc: 'Gas leak and explosion hazard report' },
+  ];
+  return `<div style="margin-bottom:10px;background:rgba(192,57,43,0.06);border:1px solid rgba(192,57,43,0.2);border-radius:12px;padding:12px 14px;">
+    <div style="font-size:11px;color:var(--red);font-weight:700;">⚠️ In an emergency, call these numbers immediately.</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px;">Tap the number to call directly from your phone.</div>
+  </div>` +
+  '<div style="display:flex;flex-direction:column;gap:8px;">' +
+  contacts.map(c => `
+    <div style="background:var(--surface-2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:28px;flex-shrink:0;">${c.emoji}</span>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;color:var(--ink);">${c.name}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;">${c.desc}</div>
+      </div>
+      <a href="tel:${c.number}" onclick="window.location.href='tel:${c.number}';return false;" style="text-decoration:none;">
+        <div style="background:var(--red);color:white;font-size:15px;font-weight:700;padding:8px 14px;border-radius:999px;white-space:nowrap;cursor:pointer;">📞 ${c.number}</div>
+      </a>
+    </div>`).join('') +
+  '</div>';
+}
+
+function closeAakDetail() {
+  document.getElementById('aak-detail-overlay').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
